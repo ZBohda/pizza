@@ -17,18 +17,29 @@
 <div class="container">
     <h2>Welcome, wanderer!</h2>
     <p>Please log in or go to a sign up page!</p>
-    <form action="/pizza/login" method="post" modelAttribute="loginForm">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-            <input id="login" type="text" class="form-control" name="login" placeholder="Login">
-        </div>
-        <div class="input-group">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-            <input id="password" type="password" class="form-control" name="password" placeholder="Password">
-        </div>
-        <br>
-        <button type="submit" class="btn btn-success">Submit</button>
-    </form>
+    <form:form class="form-horizontal" method="post" modelAttribute="loginFormDTO" action="/pizza/login">
+
+        <spring:bind path="login">
+            <div class="form-group ${status.error ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">Login</label>
+                <div class="col-sm-10">
+                    <form:input path="login" type="text" class="form-control " id="login" placeholder="Login" />
+                    <form:errors path="login" class="control-label" />
+                </div>
+            </div>
+        </spring:bind>
+
+        <spring:bind path="password">
+            <div class="form-group ${status.error ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">Password</label>
+                <div class="col-sm-10">
+                    <form:password path="password" class="form-control" id="password" placeholder="password" />
+                    <form:errors path="password" class="control-label" />
+                </div>
+            </div>
+        </spring:bind>
+        <button type="submit" class="btn-lg btn-primary pull-right">Submit</button>
+    </form:form>
 </div>
 <br>
 
