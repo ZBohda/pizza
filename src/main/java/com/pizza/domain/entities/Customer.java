@@ -2,6 +2,7 @@ package com.pizza.domain.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,11 +26,11 @@ public class Customer implements Serializable {
     @OneToOne(mappedBy = "customer")
     private Account account;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Address> addresses;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private Set<Address> addresses = new HashSet<>();
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-    private Set<Order> orders;
+    private Set<Order> orders = new HashSet<>();
 
     public long getId() {
         return id;

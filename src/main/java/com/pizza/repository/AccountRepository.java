@@ -34,4 +34,8 @@ public class AccountRepository {
     public void delete(long id) {
         em.remove(em.find(Account.class, id));
     }
+
+    public Account findAccountByLogin(String login){
+        return em.createNamedQuery("Account.getAccountByLogin", Account.class).setParameter("login", login).getResultList().stream().findFirst().orElse(null);
+    }
 }

@@ -1,6 +1,7 @@
 package com.pizza.web;
 
 import com.pizza.domain.dto.RegisterFormDTO;
+import com.pizza.services.AccountService;
 import com.pizza.validators.RegisterFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class RegisterController {
+
+    @Autowired
+    private AccountService accountService;
 
     @Autowired
     RegisterFormValidator registerFormValidator;
@@ -35,7 +39,9 @@ public class RegisterController {
         if (result.hasErrors()) {
             model.addAttribute(registerFormDTO);
             return "register";
+        } else {
+            accountService.addNewAccount(registerFormDTO);
+            return "index";
         }
-        return "index";
     }
 }
