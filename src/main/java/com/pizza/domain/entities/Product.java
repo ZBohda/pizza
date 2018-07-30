@@ -26,6 +26,9 @@ public class Product implements Serializable {
     @Column(name = "picture")
     private byte[] picture;
 
+    @Column(name = "active")
+    private boolean active;
+
     public long getId() {
         return id;
     }
@@ -64,5 +67,13 @@ public class Product implements Serializable {
 
     public void setPicture(byte[] picture) {
         this.picture = picture;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

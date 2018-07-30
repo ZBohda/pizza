@@ -1,6 +1,7 @@
 package com.pizza.web;
 
 import com.pizza.domain.dto.LoginFormDTO;
+import com.pizza.domain.enums.AccountType;
 import com.pizza.services.AccountService;
 import com.pizza.validators.LoginFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,16 @@ public class LoginController {
             return "login";
         }
         if (accountService.signIn(loginFormDTO, session, model, result)) {
-            return "menu";
-        } else return "login";
+            if (accountService.findAccountByUserSessionId(Long.parseLong(session.getAttribute("userId").toString())).getAccountType().equals(AccountType.ADMIN)) {
+                return "admin-index";
+            } return "index";
+        } return "login";
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(Model model, HttpSession session) {
+        session.invalidate();
+        model.addAttribute("loginFormDTO", new LoginFormDTO());
+        return "login";
     }
 }
