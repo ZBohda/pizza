@@ -6,11 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 
 @Repository
 public class AccountRepository {
 
-    @PersistenceContext
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
     private EntityManager em;
 
     @Transactional
@@ -37,5 +38,10 @@ public class AccountRepository {
 
     public Account findAccountByLogin(String login){
         return em.createNamedQuery("Account.getAccountByLogin", Account.class).setParameter("login", login).getResultList().stream().findFirst().orElse(null);
+    }
+
+    public Account findAccountByUserSessionId(long id){
+        return em.createNamedQuery("Account.getAccountByUserSessionId", Account.class).setParameter("customer", id).getResultList().stream().findFirst().orElse(null);
+
     }
 }

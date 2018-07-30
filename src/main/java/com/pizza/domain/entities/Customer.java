@@ -26,7 +26,7 @@ public class Customer implements Serializable {
     @OneToOne(mappedBy = "customer")
     private Account account;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer")
     private Set<Address> addresses = new HashSet<>();
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)

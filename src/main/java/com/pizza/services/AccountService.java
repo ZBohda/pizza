@@ -7,8 +7,6 @@ import com.pizza.domain.entities.Address;
 import com.pizza.domain.entities.Customer;
 import com.pizza.domain.enums.AccountType;
 import com.pizza.repository.AccountRepository;
-import com.pizza.repository.AddressRepository;
-import com.pizza.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -24,20 +22,16 @@ public class AccountService {
     private AccountRepository accountRepository;
 
     @Autowired
-    private AddressRepository addressRepository;
-
-    @Autowired
-    private CustomerRepository customerRepository;
+    private AddressService addressService;
 
     public void addNewAccount(RegisterFormDTO registerFormDTO) {
-        long customerId = customerRepository.create(createNewCustomerFromRegisterDTO(registerFormDTO));
-        Customer customer = customerRepository.read(customerId);
-        long accountId = accountRepository.create(createNewAccountFromRegisterDTO(registerFormDTO));
-        Account account = accountRepository.read(accountId);
+        Account account = createNewAccountFromRegisterDTO(registerFormDTO);
+        Customer customer = createNewCustomerFromRegisterDTO(registerFormDTO);
+        Address address = createNewAddressFromRegisterDTO(registerFormDTO);
         account.setCustomer(customer);
-        accountRepository.update(account);
-        Address address = createNewAddressFromRegisterDTO(registerFormDTO, customer);
-        addressRepository.create(address);
+        customer.setAccount(account);
+        accountRepository.create(account);
+        addressService.addNewAddressesToCustomer(address, customer);
     }
 
     private Account createNewAccountFromRegisterDTO(RegisterFormDTO registerFormDTO) {
@@ -58,11 +52,10 @@ public class AccountService {
         return customer;
     }
 
-    private Address createNewAddressFromRegisterDTO(RegisterFormDTO registerFormDTO, Customer customer) {
+    private Address createNewAddressFromRegisterDTO(RegisterFormDTO registerFormDTO) {
         Address address = new Address();
         address.setCity(registerFormDTO.getCity());
         address.setAddress(registerFormDTO.getAddress());
-        address.setCustomer(customer);
         return address;
     }
 
@@ -90,5 +83,9 @@ public class AccountService {
             model.addAttribute(loginFormDTO);
             return false;
         }
+    }
+
+    public Account findAccountByUserSessionId(long id) {
+        return accountRepository.findAccountByUserSessionId(id);
     }
 }

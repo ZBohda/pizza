@@ -9,7 +9,8 @@ import java.util.Date;
 @Entity
 @Table(name = "account")
 @NamedQueries({
-        @NamedQuery(name = "Account.getAccountByLogin", query = "select acc from Account acc where acc.login =:login")
+        @NamedQuery(name = "Account.getAccountByLogin", query = "select acc from Account acc where acc.login =:login"),
+        @NamedQuery(name = "Account.getAccountByUserSessionId", query = "select acc from Account acc where acc.customer.id =:customer")
 })
 public class Account implements Serializable {
 
