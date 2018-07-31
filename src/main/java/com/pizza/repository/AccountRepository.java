@@ -37,11 +37,10 @@ public class AccountRepository {
     }
 
     public Account findAccountByLogin(String login){
-        return em.createNamedQuery("Account.getAccountByLogin", Account.class).setParameter("login", login).getResultList().stream().findFirst().orElse(null);
+        return em.createNamedQuery("Account.findAccountByLogin", Account.class).setParameter("login", login).getResultList().stream().findFirst().orElse(null);
     }
 
     public Account findAccountByUserSessionId(long id){
-        return em.createNamedQuery("Account.getAccountByUserSessionId", Account.class).setParameter("customer", id).getResultList().stream().findFirst().orElse(null);
-
+        return em.createNamedQuery("Account.findAccountByUserSessionId", Account.class).setParameter("customer", id).getResultList().stream().findFirst().orElse(null);
     }
 }

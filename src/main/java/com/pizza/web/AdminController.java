@@ -36,8 +36,7 @@ public class AdminController {
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
     public String getMenu(Model model) {
-        List<Product> products = new ArrayList<>();
-        model.addAttribute("products", products);
+        model.addAttribute("products", productService.getAll());
         return "admin-menu";
     }
 
@@ -75,6 +74,7 @@ public class AdminController {
             return "admin-menu-add";
         } else {
             productService.addNewProduct(productFormDTO);
+            model.addAttribute("products", productService.getAll());
             return "admin-menu";
         }
     }

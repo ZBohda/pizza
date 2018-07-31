@@ -1,11 +1,13 @@
 package com.pizza.repository;
 
+import com.pizza.domain.entities.Account;
 import com.pizza.domain.entities.Product;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public class ProductRepository {
@@ -33,5 +35,9 @@ public class ProductRepository {
     @Transactional
     public void delete(long id) {
         em.remove(em.find(Product.class, id));
+    }
+
+    public List<Product> findAll(){
+        return em.createNamedQuery("Product.findAll", Product.class).getResultList();
     }
 }

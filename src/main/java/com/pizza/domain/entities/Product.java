@@ -6,6 +6,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "product")
+@NamedQueries({
+        @NamedQuery(name = "Product.findAll", query = "select pr from Product pr"),
+})
 public class Product implements Serializable {
 
     @Id

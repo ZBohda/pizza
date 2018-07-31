@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -28,6 +29,10 @@ public class ProductService {
             LOG.error(e);
         }
         productRepository.create(product);
+    }
+
+    public List<Product> getAll() {
+        return productRepository.findAll();
     }
 
 }
