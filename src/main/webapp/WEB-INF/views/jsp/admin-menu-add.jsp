@@ -42,14 +42,40 @@
 <div class="container">
     <form:form class="form-horizontal" method="post" enctype="multipart/form-data" modelAttribute="productFormDTO" action="/pizza/admin/menu/add">
 
-        <table>
-            <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-        </table>
+        <spring:bind path="name">
+            <div class="form-group ${status.error ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">name</label>
+                <div class="col-sm-10">
+                    <form:input path="name" type="text" class="form-control " id="name" placeholder="name" />
+                    <form:errors path="name" class="control-label" />
+                </div>
+            </div>
+        </spring:bind>
 
+        <spring:bind path="details">
+            <div class="form-group ${status.error ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">details</label>
+                <div class="col-sm-10">
+                    <form:input path="details" type="text" class="form-control " id="details" placeholder="details" />
+                    <form:errors path="details" class="control-label" />
+                </div>
+            </div>
+        </spring:bind>
+
+        <spring:bind path="file">
+            <div class="form-group ${status.error ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">picture</label>
+                <div class="col-sm-10">
+                    <form:input path="file" type="file" class="form-control " id="file" placeholder="file" />
+                    <form:errors path="file" class="control-label" />
+                </div>
+            </div>
+        </spring:bind>
 
         <button type="submit" class="btn-lg btn-primary pull-right">Add</button>
     </form:form>
 </div>
+
 
 </body>
 </html>

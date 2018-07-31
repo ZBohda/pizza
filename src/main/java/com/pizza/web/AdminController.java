@@ -5,15 +5,15 @@ import com.pizza.domain.entities.Currency;
 import com.pizza.domain.entities.Customer;
 import com.pizza.domain.entities.Order;
 import com.pizza.domain.entities.Product;
+import com.pizza.services.ProductService;
 import com.pizza.validators.ProductFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -25,6 +25,14 @@ public class AdminController {
 
     @Autowired
     private ProductFormValidator productFormValidator;
+
+    @Autowired
+    private ProductService productService;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(productFormValidator);
+    }
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
     public String getMenu(Model model) {
@@ -61,13 +69,13 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/menu/add", method = RequestMethod.POST)
-    public String addNewProduct(@ModelAttribute("productFormDTO") @Validated ProductFormDTO productFormDTO, @RequestParam("file") MultipartFile file, Model model) {
-        if (false) {
+    public String addNewProduct(@ModelAttribute("productFormDTO") @Validated ProductFormDTO productFormDTO, BindingResult result, Model model) {
+        if (result.hasErrors()) {
             model.addAttribute(productFormDTO);
             return "admin-menu-add";
         } else {
-            System.out.println(file.getOriginalFilename());
-            return "index";
+            productService.addNewProduct(productFormDTO);
+            return "admin-menu";
         }
     }
 }
