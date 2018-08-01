@@ -5,6 +5,7 @@ import com.pizza.domain.entities.Currency;
 import com.pizza.domain.entities.Customer;
 import com.pizza.domain.entities.Order;
 import com.pizza.domain.entities.Product;
+import com.pizza.services.PriceRowService;
 import com.pizza.services.ProductService;
 import com.pizza.validators.ProductFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class AdminController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private PriceRowService priceRowService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -77,5 +81,11 @@ public class AdminController {
             model.addAttribute("products", productService.getAll());
             return "admin-menu";
         }
+    }
+
+    @RequestMapping(value = "/product/{productId}/prices", method = RequestMethod.GET)
+    public String findProductsPrices(@PathVariable long productId, Model model) {
+        model.addAttribute("prices", priceRowService.getAllPriceRowsForProduct(productId));
+        return "admin-menu";
     }
 }

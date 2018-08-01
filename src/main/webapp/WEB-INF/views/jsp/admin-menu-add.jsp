@@ -33,7 +33,7 @@
                 <li><a href="/pizza/logout"><span class="glyphicon glyphicon-log-in"></span>Logout</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/admin/menu/add"><span class="glyphicon glyphicon-plus"></span>Add a product</a></li>
+                <li><a href="/pizza/admin/menu/add"><span class="glyphicon glyphicon-plus"></span>Add a product</a></li>
             </ul>
         </div>
     </div>
@@ -75,7 +75,6 @@
         <button type="submit" class="btn-lg btn-primary pull-right">Add</button>
     </form:form>
 </div>
-
 
 </body>
 </html>
