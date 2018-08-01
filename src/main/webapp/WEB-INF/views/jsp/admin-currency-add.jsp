@@ -1,6 +1,8 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<html xmlns:th="http://www.thymeleaf.org">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +13,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
+
+
 <body>
 
 <nav class="navbar navbar-inverse">
@@ -36,24 +40,30 @@
 </nav>
 
 <div class="container">
+    <form:form class="form-horizontal" method="post" modelAttribute="currencyFormDTO" action="/pizza/admin/currencies/add">
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>#ID</th>
-            <th>Name</th>
-            <th>Code</th>
-        </tr>
-        </thead>
+        <spring:bind path="name">
+            <div class="form-group ${status.error ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">name</label>
+                <div class="col-sm-10">
+                    <form:input path="name" type="text" class="form-control " id="name" placeholder="name" />
+                    <form:errors path="name" class="control-label" />
+                </div>
+            </div>
+        </spring:bind>
 
-        <c:forEach var="currency" items="${currencies}">
-            <tr>
-                <td>${currency.id}</td>
-                <td>${currency.name}</td>
-                <td>${currency.code}</td>
-            </tr>
-        </c:forEach>
-    </table>
+        <spring:bind path="code">
+            <div class="form-group ${status.error ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">code</label>
+                <div class="col-sm-10">
+                    <form:input path="code" type="text" class="form-control " id="code" placeholder="code" />
+                    <form:errors path="code" class="control-label" />
+                </div>
+            </div>
+        </spring:bind>
+
+        <button type="submit" class="btn-lg btn-primary pull-right">Add</button>
+    </form:form>
 </div>
 
 </body>

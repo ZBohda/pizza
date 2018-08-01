@@ -1,10 +1,14 @@
 package com.pizza.domain.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "currency")
-public class Currency {
+@NamedQueries({
+        @NamedQuery(name = "Currency.findAll", query = "select cu from Currency cu"),
+})
+public class Currency implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +17,9 @@ public class Currency {
 
     @Column(name = "code")
     private String code;
+
+    @Column(name = "name")
+    private String name;
 
     public long getId() {
         return id;
@@ -28,5 +35,13 @@ public class Currency {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

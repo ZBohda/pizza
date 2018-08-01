@@ -1,21 +1,20 @@
 package com.pizza.web;
 
+import com.pizza.domain.dto.CurrencyFormDTO;
 import com.pizza.domain.dto.ProductFormDTO;
-import com.pizza.domain.entities.Currency;
 import com.pizza.domain.entities.Customer;
 import com.pizza.domain.entities.Order;
-import com.pizza.domain.entities.Product;
+import com.pizza.services.CurrencyService;
 import com.pizza.services.PriceRowService;
 import com.pizza.services.ProductService;
+import com.pizza.validators.CurrencyFormValidator;
 import com.pizza.validators.ProductFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +27,16 @@ public class AdminController {
     private ProductFormValidator productFormValidator;
 
     @Autowired
+    private CurrencyFormValidator currencyFormValidator;
+
+    @Autowired
     private ProductService productService;
 
     @Autowired
-    private PriceRowService priceRowService;
+    private CurrencyService currencyService;
 
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.setValidator(productFormValidator);
-    }
+    @Autowired
+    private PriceRowService priceRowService;
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
     public String getMenu(Model model) {
@@ -60,8 +60,7 @@ public class AdminController {
 
     @RequestMapping(value = "/currencies", method = RequestMethod.GET)
     public String getCurrency(Model model) {
-        List<Currency> currencies = new ArrayList<>();
-        model.addAttribute("currencies", currencies);
+        model.addAttribute("currencies", currencyService.getAll());
         return "admin-currencies";
     }
 
@@ -73,6 +72,7 @@ public class AdminController {
 
     @RequestMapping(value = "/menu/add", method = RequestMethod.POST)
     public String addNewProduct(@ModelAttribute("productFormDTO") @Validated ProductFormDTO productFormDTO, BindingResult result, Model model) {
+        productFormValidator.validate(productFormDTO, result);
         if (result.hasErrors()) {
             model.addAttribute(productFormDTO);
             return "admin-menu-add";
@@ -87,5 +87,24 @@ public class AdminController {
     public String findProductsPrices(@PathVariable long productId, Model model) {
         model.addAttribute("prices", priceRowService.getAllPriceRowsForProduct(productId));
         return "admin-menu";
+    }
+
+    @RequestMapping(value = "/currencies/add", method = RequestMethod.GET)
+    public String getCurrencyAddForm(Model model){
+        model.addAttribute("currencyFormDTO", new CurrencyFormDTO());
+        return "admin-currency-add";
+    }
+
+    @RequestMapping(value = "/currencies/add", method = RequestMethod.POST)
+    public String addNewCurrency(@ModelAttribute("currencyFormDTO") @Validated CurrencyFormDTO currencyFormDTO, BindingResult result, Model model) {
+        currencyFormValidator.validate(currencyFormDTO, result);
+        if (result.hasErrors()) {
+            model.addAttribute(currencyFormDTO);
+            return "admin-currency-add";
+        } else {
+            currencyService.addNewCurrency(currencyFormDTO);
+            model.addAttribute("currencies", currencyService.getAll());
+            return "admin-currencies";
+        }
     }
 }

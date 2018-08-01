@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public class CurrencyRepository {
@@ -33,5 +34,9 @@ public class CurrencyRepository {
     @Transactional
     public void delete(long id) {
         em.remove(em.find(Currency.class, id));
+    }
+
+    public List<Currency> getAll(){
+        return em.createNamedQuery("Currency.findAll", Currency.class).getResultList();
     }
 }
