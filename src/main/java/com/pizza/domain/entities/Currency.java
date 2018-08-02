@@ -7,6 +7,7 @@ import java.io.Serializable;
 @Table(name = "currency")
 @NamedQueries({
         @NamedQuery(name = "Currency.findAll", query = "select cu from Currency cu"),
+        @NamedQuery(name = "Currency.findByCode", query = "select cu from Currency cu where cu.code =:code"),
 })
 public class Currency implements Serializable {
 

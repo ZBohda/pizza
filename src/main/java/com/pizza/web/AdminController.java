@@ -1,20 +1,23 @@
 package com.pizza.web;
 
-import com.pizza.domain.dto.CurrencyFormDTO;
 import com.pizza.domain.dto.ProductFormDTO;
+import com.pizza.domain.entities.Currency;
 import com.pizza.domain.entities.Customer;
 import com.pizza.domain.entities.Order;
 import com.pizza.services.CurrencyService;
 import com.pizza.services.PriceRowService;
 import com.pizza.services.ProductService;
-import com.pizza.validators.CurrencyFormValidator;
+import com.pizza.validators.CurrencyValidator;
 import com.pizza.validators.ProductFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +30,7 @@ public class AdminController {
     private ProductFormValidator productFormValidator;
 
     @Autowired
-    private CurrencyFormValidator currencyFormValidator;
+    private CurrencyValidator currencyValidator;
 
     @Autowired
     private ProductService productService;
@@ -90,21 +93,42 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/currencies/add", method = RequestMethod.GET)
-    public String getCurrencyAddForm(Model model){
-        model.addAttribute("currencyFormDTO", new CurrencyFormDTO());
-        return "admin-currency-add";
+    public String getCurrencyAddForm(Model model) {
+        model.addAttribute("currency", new Currency());
+        return "admin-currencies-add";
     }
 
     @RequestMapping(value = "/currencies/add", method = RequestMethod.POST)
-    public String addNewCurrency(@ModelAttribute("currencyFormDTO") @Validated CurrencyFormDTO currencyFormDTO, BindingResult result, Model model) {
-        currencyFormValidator.validate(currencyFormDTO, result);
+    public String addNewCurrency(@ModelAttribute("currency") @Validated Currency currency, BindingResult result, Model model) {
+        currencyValidator.validate(currency, result);
         if (result.hasErrors()) {
-            model.addAttribute(currencyFormDTO);
-            return "admin-currency-add";
+            model.addAttribute(currency);
+            return "admin-currencies-add";
         } else {
-            currencyService.addNewCurrency(currencyFormDTO);
+            currencyService.addNewCurrency(currency);
             model.addAttribute("currencies", currencyService.getAll());
             return "admin-currencies";
         }
     }
+
+    @RequestMapping(value = "/currencies/{currencyId}/update", method = RequestMethod.GET)
+    public String getCurrencyUpdateForm(@PathVariable long currencyId, Model model) {
+        model.addAttribute("currency", currencyService.getCurrencyById(currencyId));
+        return "admin-currencies-update";
+    }
+
+    @RequestMapping(value = "/currencies/{currencyId}/update", method = RequestMethod.POST)
+    public String updateCurrency(@ModelAttribute("currency") @Validated Currency currency, BindingResult result, Model model) {
+        currencyValidator.validate(currency, result);
+        if (result.hasErrors()) {
+            model.addAttribute(currency);
+            return "admin-currencies-update";
+        } else {
+
+            currencyService.updateCurrency(currency);
+            model.addAttribute("currencies", currencyService.getAll());
+            return "admin-currencies";
+        }
+    }
+
 }

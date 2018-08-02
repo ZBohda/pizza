@@ -39,4 +39,8 @@ public class CurrencyRepository {
     public List<Currency> getAll(){
         return em.createNamedQuery("Currency.findAll", Currency.class).getResultList();
     }
+
+    public Currency getCurrencyByCode(String code){
+        return em.createNamedQuery("Currency.findByCode", Currency.class).setParameter("code", code).getResultList().stream().findFirst().orElse(null);
+    }
 }

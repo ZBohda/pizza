@@ -1,6 +1,5 @@
 package com.pizza.services;
 
-import com.pizza.domain.dto.CurrencyFormDTO;
 import com.pizza.domain.entities.Currency;
 import com.pizza.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +13,33 @@ public class CurrencyService {
     @Autowired
     private CurrencyRepository currencyRepository;
 
-    public List<Currency> getAll(){
+    @Autowired
+    private PriceRowService priceRowService;
+
+    @Autowired
+    private ProductService productService;
+
+    public List<Currency> getAll() {
         return currencyRepository.getAll();
     }
 
-    public void addNewCurrency(CurrencyFormDTO currencyFormDTO){
-        Currency currency = new Currency();
-        currency.setCode(currencyFormDTO.getCode());
-        currency.setName(currencyFormDTO.getName());
+    public void addNewCurrency(Currency currency) {
         currencyRepository.create(currency);
+    }
+
+    public Currency getCurrencyById(long id) {
+        return currencyRepository.read(id);
+    }
+
+    public Currency getCurrencyByCode(String code) {
+        return currencyRepository.getCurrencyByCode(code);
+    }
+
+    public void updateCurrency(Currency currency) {
+        currencyRepository.update(currency);
+    }
+
+    public void deactivateAllCurrencyPrices(long currencyId) {
+        priceRowService.deactivateAllPriceRowsForCurrency(currencyId);
     }
 }

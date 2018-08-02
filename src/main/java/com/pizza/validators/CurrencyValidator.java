@@ -1,8 +1,7 @@
 package com.pizza.validators;
 
-import com.pizza.domain.dto.CurrencyFormDTO;
-import com.pizza.domain.dto.LoginFormDTO;
-import com.pizza.domain.dto.RegisterFormDTO;
+import com.pizza.domain.entities.Currency;
+import com.pizza.services.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -11,7 +10,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Component
-public class CurrencyFormValidator implements Validator {
+public class CurrencyValidator implements Validator {
 
     @Autowired
     @Qualifier("namesValidator")
@@ -21,24 +20,31 @@ public class CurrencyFormValidator implements Validator {
     @Qualifier("currencyCodeValidator")
     private CurrencyCodeValidator currencyCodeValidator;
 
+    @Autowired
+    private CurrencyService currencyService;
+
     @Override
     public boolean supports(Class<?> aClass) {
-        return CurrencyFormDTO.class.equals(aClass);
+        return Currency.class.equals(aClass);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        CurrencyFormDTO currencyFormDTO = (CurrencyFormDTO) target;
+        Currency currency = (Currency) target;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty.currencyForm.name");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "code", "NotEmpty.currencyForm.code");
 
-        if (!namesValidator.valid(currencyFormDTO.getName())) {
+        if (!namesValidator.valid(currency.getName())) {
             errors.rejectValue("name", "Pattern.currencyForm.name");
         }
 
-        if (!currencyCodeValidator.valid(currencyFormDTO.getCode())) {
+        if (!currencyCodeValidator.valid(currency.getCode())) {
             errors.rejectValue("code", "Pattern.currencyForm.code");
+        }
+
+        if(currencyService.getCurrencyByCode(currency.getCode()) != null){
+            errors.rejectValue("code", "IsExists.currencyForm.code");
         }
     }
 }

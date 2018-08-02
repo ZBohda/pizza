@@ -40,7 +40,11 @@
 </nav>
 
 <div class="container">
-    <form:form class="form-horizontal" method="post" modelAttribute="currencyFormDTO" action="/pizza/admin/currencies/add">
+    <form:form class="form-horizontal" method="post" modelAttribute="currency" action="/pizza/admin/currencies/{currencyId}/update">
+
+        <spring:bind path="id">
+            <input type="hidden" name="id" value=${currency.id}>
+        </spring:bind>
 
         <spring:bind path="name">
             <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -61,8 +65,7 @@
                 </div>
             </div>
         </spring:bind>
-
-        <button type="submit" class="btn-lg btn-primary pull-right">Add</button>
+        <button type="submit" class="btn-lg btn-primary pull-right">Update</button>
     </form:form>
 </div>
 
