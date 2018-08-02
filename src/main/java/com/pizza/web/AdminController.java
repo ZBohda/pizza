@@ -5,6 +5,7 @@ import com.pizza.domain.dto.ProductFormDTO;
 import com.pizza.domain.entities.Currency;
 import com.pizza.domain.entities.Customer;
 import com.pizza.domain.entities.Order;
+import com.pizza.domain.entities.PriceRow;
 import com.pizza.services.CurrencyService;
 import com.pizza.services.PriceRowService;
 import com.pizza.services.ProductService;
@@ -114,7 +115,33 @@ public class AdminController {
             model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
             return "admin-product-price-add";
         } else {
-            priceRowService.addNewPriceRow(priceRowFormDTO, productId);
+            priceRowService.addNewPriceRowFromPriceRowFormDTO(priceRowFormDTO, productId);
+            model.addAttribute("priceRows", priceRowService.getAllPriceRowsForProduct(productId));
+            return "admin-product-prices";
+        }
+    }
+
+    @RequestMapping(value = "/product/{productId}/update/{priceRowId}", method = RequestMethod.GET)
+    public String getUpdatePriceRowForm(@PathVariable long priceRowId, @PathVariable long productId, Model model) {
+        PriceRow priceRow = priceRowService.getPriceRowById(priceRowId);
+        PriceRowFormDTO priceRowFormDTO = priceRowService.getPriceRowFormDTOFromPriceRow(priceRow);
+        model.addAttribute("priceRowFormDTO", priceRowFormDTO);
+        model.addAttribute("priceRowId", priceRowId);
+        model.addAttribute("productId", productId);
+        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
+        return "admin-product-price-update";
+    }
+
+    @RequestMapping(value = "/product/{productId}/update/{priceRowId}", method = RequestMethod.POST)
+    public String updatePriceRowForm(@ModelAttribute("priceRowFormDTO") @Validated PriceRowFormDTO priceRowFormDTO, @PathVariable long priceRowId, @PathVariable long productId, BindingResult result, Model model) {
+        priceRowFormValidator.validate(priceRowFormDTO, result);
+        if (result.hasErrors()) {
+            model.addAttribute("priceRowFormDTO", priceRowFormDTO);
+            model.addAttribute("priceRowId", priceRowId);
+            model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
+            return "admin-product-price-update";
+        } else {
+            priceRowService.updatePriceRowFromPriceRowFormDTO(priceRowFormDTO, priceRowId);
             model.addAttribute("priceRows", priceRowService.getAllPriceRowsForProduct(productId));
             return "admin-product-prices";
         }
@@ -152,11 +179,9 @@ public class AdminController {
             model.addAttribute(currency);
             return "admin-currencies-update";
         } else {
-
             currencyService.updateCurrency(currency);
             model.addAttribute("currencies", currencyService.getAll());
             return "admin-currencies";
         }
     }
-
 }

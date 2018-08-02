@@ -36,16 +36,36 @@ public class PriceRowService {
         }
     }
 
-    public void addNewPriceRow(PriceRowFormDTO priceRowFormDTO, long productId) {
+    public void addNewPriceRowFromPriceRowFormDTO(PriceRowFormDTO priceRowFormDTO, long productId) {
         priceRowRepository.create(createPriceRowFromPriceRowFormDTO(priceRowFormDTO, productId));
     }
 
-    private PriceRow createPriceRowFromPriceRowFormDTO(PriceRowFormDTO priceRowFormDTO, long productId){
+    public void updatePriceRowFromPriceRowFormDTO(PriceRowFormDTO priceRowFormDTO, long priceRowId){
+        PriceRow priceRow = priceRowRepository.read(priceRowId);
+        priceRow.setActive(priceRowFormDTO.isActive());
+        priceRow.setCurrency(currencyService.getCurrencyByCode(priceRowFormDTO.getCurrencyCode()));
+        priceRow.setPrice(Double.parseDouble(priceRowFormDTO.getPrice()));
+        priceRowRepository.update(priceRow);
+    }
+
+    private PriceRow createPriceRowFromPriceRowFormDTO(PriceRowFormDTO priceRowFormDTO, long productId) {
         PriceRow priceRow = new PriceRow();
         priceRow.setActive(priceRowFormDTO.isActive());
         priceRow.setProduct(productService.getProduct(productId));
         priceRow.setCurrency(currencyService.getCurrencyByCode(priceRowFormDTO.getCurrencyCode()));
         priceRow.setPrice(Double.parseDouble(priceRowFormDTO.getPrice()));
         return priceRow;
+    }
+
+    public PriceRow getPriceRowById(long id) {
+        return priceRowRepository.read(id);
+    }
+
+    public PriceRowFormDTO getPriceRowFormDTOFromPriceRow(PriceRow priceRow){
+        PriceRowFormDTO priceRowFormDTO = new PriceRowFormDTO();
+        priceRowFormDTO.setActive(priceRow.isActive());
+        priceRowFormDTO.setCurrencyCode(priceRow.getCurrency().getCode());
+        priceRowFormDTO.setPrice(Double.toString(priceRow.getPrice()));
+        return priceRowFormDTO;
     }
 }
