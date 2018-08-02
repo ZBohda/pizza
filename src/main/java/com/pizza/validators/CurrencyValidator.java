@@ -13,10 +13,6 @@ import org.springframework.validation.Validator;
 public class CurrencyValidator implements Validator {
 
     @Autowired
-    @Qualifier("namesValidator")
-    private NamesValidator namesValidator;
-
-    @Autowired
     @Qualifier("currencyCodeValidator")
     private CurrencyCodeValidator currencyCodeValidator;
 
@@ -32,12 +28,7 @@ public class CurrencyValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Currency currency = (Currency) target;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty.currencyForm.name");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "code", "NotEmpty.currencyForm.code");
-
-        if (!namesValidator.valid(currency.getName())) {
-            errors.rejectValue("name", "Pattern.currencyForm.name");
-        }
 
         if (!currencyCodeValidator.valid(currency.getCode())) {
             errors.rejectValue("code", "Pattern.currencyForm.code");

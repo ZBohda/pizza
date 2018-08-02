@@ -41,7 +41,6 @@
         <thead>
         <tr>
             <th>#ID</th>
-            <th>Name</th>
             <th>Code</th>
             <th>Actions</th>
         </tr>
@@ -50,7 +49,6 @@
         <c:forEach var="currency" items="${currencies}">
             <tr>
                 <td>${currency.id}</td>
-                <td>${currency.name}</td>
                 <td>${currency.code}</td>
                 <td>
                     <spring:url value="/admin/currencies/${currency.id}/update" var="updateUrl" />

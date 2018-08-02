@@ -46,16 +46,6 @@
             <input type="hidden" name="id" value=${currency.id}>
         </spring:bind>
 
-        <spring:bind path="name">
-            <div class="form-group ${status.error ? 'has-error' : ''}">
-                <label class="col-sm-2 control-label">name</label>
-                <div class="col-sm-10">
-                    <form:input path="name" type="text" class="form-control " id="name" placeholder="name" />
-                    <form:errors path="name" class="control-label" />
-                </div>
-            </div>
-        </spring:bind>
-
         <spring:bind path="code">
             <div class="form-group ${status.error ? 'has-error' : ''}">
                 <label class="col-sm-2 control-label">code</label>

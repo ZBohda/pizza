@@ -16,9 +16,6 @@ public class CurrencyService {
     @Autowired
     private PriceRowService priceRowService;
 
-    @Autowired
-    private ProductService productService;
-
     public List<Currency> getAll() {
         return currencyRepository.getAll();
     }
