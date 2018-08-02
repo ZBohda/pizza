@@ -5,7 +5,9 @@ import com.pizza.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CurrencyService {
@@ -34,6 +36,15 @@ public class CurrencyService {
 
     public void updateCurrency(Currency currency) {
         currencyRepository.update(currency);
+    }
+
+    public Map<String, String> getCurrencyCodesMap(){
+        List<Currency> currencies = currencyRepository.getAll();
+        Map<String, String> currencyCodes = new HashMap<>();
+        for(Currency currency : currencies){
+            currencyCodes.put(currency.getCode(), currency.getCode());
+        }
+        return currencyCodes;
     }
 
     public void deactivateAllCurrencyPrices(long currencyId) {

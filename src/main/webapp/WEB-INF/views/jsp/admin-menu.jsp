@@ -1,6 +1,6 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,20 +53,10 @@
                 <td>${product.id}</td>
                 <td>${product.name}</td>
                 <td>${product.details}</td>
-                <td><button class="btn btn-primary" onclick="location.href='/pizza/admin/product/${product.id}/prices'">Prices</button></td>
-                <td>
-                    <spring:url value="/pizza/admin/product/${product.id}/update" var="updateUrl" />
+                <td><button class="btn btn-primary" onclick="location.href='/pizza/admin/product/${product.id}/prices'">Prices</button>
+                </td>
+                <td><spring:url value="/pizza/admin/product/${product.id}/update" var="updateUrl"/>
                     <button class="btn btn-info" onclick="location.href='${updateUrl}'">Update</button>
-                    <c:choose>
-                        <c:when test="${product.active==true}">
-                            <spring:url value="/pizza/admin/product/${product.id}/deactive" var="deactivateUrl" />
-                            <button class="btn btn-danger" onclick="location.href='${deactivateUrl}'">Deactivate</button></td>
-                        </c:when>
-                        <c:otherwise>
-                            <spring:url value="/pizza/admin/product/${product.id}/activate" var="activateUrl" />
-                            <button class="btn btn-primary" onclick="location.href='${activateUrl}'">Activate</button>
-                        </c:otherwise>
-                    </c:choose>
             </tr>
         </c:forEach>
     </table>

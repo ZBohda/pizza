@@ -1,5 +1,6 @@
 package com.pizza.web;
 
+import com.pizza.domain.dto.PriceRowFormDTO;
 import com.pizza.domain.dto.ProductFormDTO;
 import com.pizza.domain.entities.Currency;
 import com.pizza.domain.entities.Customer;
@@ -8,6 +9,7 @@ import com.pizza.services.CurrencyService;
 import com.pizza.services.PriceRowService;
 import com.pizza.services.ProductService;
 import com.pizza.validators.CurrencyValidator;
+import com.pizza.validators.PriceRowFormValidator;
 import com.pizza.validators.ProductFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +42,9 @@ public class AdminController {
 
     @Autowired
     private PriceRowService priceRowService;
+
+    @Autowired
+    private PriceRowFormValidator priceRowFormValidator;
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
     public String getMenu(Model model) {
@@ -88,8 +93,31 @@ public class AdminController {
 
     @RequestMapping(value = "/product/{productId}/prices", method = RequestMethod.GET)
     public String findProductsPrices(@PathVariable long productId, Model model) {
-        model.addAttribute("prices", priceRowService.getAllPriceRowsForProduct(productId));
-        return "admin-menu";
+        model.addAttribute("priceRows", priceRowService.getAllPriceRowsForProduct(productId));
+        return "admin-product-prices";
+    }
+
+    @RequestMapping(value = "/product/{productId}/price/add", method = RequestMethod.GET)
+    public String getAddPriceForm(@PathVariable long productId, Model model) {
+        model.addAttribute("priceRowFormDTO", new PriceRowFormDTO());
+        model.addAttribute("productId", productId);
+        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
+        return "admin-product-price-add";
+    }
+
+    @RequestMapping(value = "/product/{productId}/price/add", method = RequestMethod.POST)
+    public String addNewPriceRow(@ModelAttribute("priceRowFormDTO") @Validated PriceRowFormDTO priceRowFormDTO, @PathVariable long productId, BindingResult result, Model model) {
+        priceRowFormValidator.validate(priceRowFormDTO, result);
+        if (result.hasErrors()) {
+            model.addAttribute("priceRowFormDTO", priceRowFormDTO);
+            model.addAttribute("productId", productId);
+            model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
+            return "admin-product-price-add";
+        } else {
+            priceRowService.addNewPriceRow(priceRowFormDTO, productId);
+            model.addAttribute("priceRows", priceRowService.getAllPriceRowsForProduct(productId));
+            return "admin-product-prices";
+        }
     }
 
     @RequestMapping(value = "/currencies/add", method = RequestMethod.GET)

@@ -35,6 +35,8 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-
+    public Product getProduct(long id){
+        return productRepository.read(id);
+    }
 
 }
