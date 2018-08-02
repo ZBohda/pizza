@@ -17,6 +17,10 @@ public class PriceRowFormValidator implements Validator {
     private CurrencyCodeValidator currencyCodeValidator;
 
     @Autowired
+    @Qualifier("priceValidator")
+    private PriceValidator priceValidator;
+
+    @Autowired
     private CurrencyService currencyService;
 
     @Override
@@ -34,11 +38,15 @@ public class PriceRowFormValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "active", "NotEmpty.priceRowForm.active");
 
         if (!currencyCodeValidator.valid(priceRowFormDTO.getCurrencyCode())) {
-            errors.rejectValue("code", "Pattern.currencyForm.code");
+            errors.rejectValue("code", "Pattern.priceRowForm.code");
         }
 
         if (currencyService.getCurrencyByCode(priceRowFormDTO.getCurrencyCode()) == null) {
-            errors.rejectValue("code", "NotExists.currencyForm.code");
+            errors.rejectValue("code", "NotExists.priceRowForm.code");
+        }
+
+        if (!priceValidator.valid(priceRowFormDTO.getPrice())){
+            errors.rejectValue("price", "Pattern.priceRowForm.price");
         }
     }
 }
