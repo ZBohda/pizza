@@ -43,15 +43,50 @@
             <th>#ID</th>
             <th>Currency</th>
             <th>Price</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
         </thead>
 
         <c:forEach var="priceRow" items="${priceRows}">
+
+            <c:choose>
+                <c:when test="${priceRow.active} eq 1">
+                    <tr>
+                        <td>${priceRow.id}</td>
+                        <td>${priceRow.currency.code}</td>
+                        <td>${priceRow.price}</td>
+                        <td>Active</td>
+                        <td><spring:url value="/pizza/admin/product/${priceRow.id}/update" var="updateUrl"/>
+                            <button class="btn btn-info" onclick="location.href='${updateUrl}'">Update</button>
+                    </tr>
+                </c:when>
+                <c:when test="${priceRow.active} eq 0">
+                    <tr>
+                        <td>${priceRow.id}</td>
+                        <td>${priceRow.currency.code}</td>
+                        <td>${priceRow.price}</td>
+                        <td>Inactive</td>
+                        <td><spring:url value="/pizza/admin/product/${priceRow.id}/update" var="updateUrl"/>
+                            <button class="btn btn-info" onclick="location.href='${updateUrl}'">Update</button>
+                    </tr>
+                </c:when>
+            </c:choose>
+
             <tr>
                 <td>${priceRow.id}</td>
                 <td>${priceRow.currency.code}</td>
                 <td>${priceRow.price}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${priceRow.active=='true'}">
+                            Active
+                        </c:when>
+                        <c:otherwise>
+                            Inactive
+                        </c:otherwise>
+                    </c:choose>
+                </td>
                 <td><spring:url value="/pizza/admin/product/${priceRow.id}/update" var="updateUrl"/>
                     <button class="btn btn-info" onclick="location.href='${updateUrl}'">Update</button>
             </tr>
