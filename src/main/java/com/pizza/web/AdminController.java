@@ -3,6 +3,7 @@ package com.pizza.web;
 import com.pizza.domain.dto.PriceRowFormDTO;
 import com.pizza.domain.dto.ProductFormDTO;
 import com.pizza.domain.entities.*;
+import com.pizza.services.AccountService;
 import com.pizza.services.CurrencyService;
 import com.pizza.services.PriceRowService;
 import com.pizza.services.ProductService;
@@ -45,6 +46,9 @@ public class AdminController {
     private PriceRowService priceRowService;
 
     @Autowired
+    private AccountService accountService;
+
+    @Autowired
     private PriceRowFormValidator priceRowFormValidator;
 
     private static final Logger LOG = Logger.getLogger(AdminController.class.getName());
@@ -57,8 +61,7 @@ public class AdminController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String getUsers(Model model) {
-        List<Customer> customers = new ArrayList<>();
-        model.addAttribute("customers", customers);
+        model.addAttribute("accounts", accountService.findAllCustomersAccount());
         return "admin-users";
     }
 

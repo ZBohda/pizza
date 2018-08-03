@@ -10,7 +10,8 @@ import java.util.Date;
 @Table(name = "account")
 @NamedQueries({
         @NamedQuery(name = "Account.findAccountByLogin", query = "select acc from Account acc where acc.login =:login"),
-        @NamedQuery(name = "Account.findAccountByUserSessionId", query = "select acc from Account acc where acc.customer.id =:customer")
+        @NamedQuery(name = "Account.findAccountByUserSessionId", query = "select acc from Account acc where acc.customer.id =:customer"),
+        @NamedQuery(name = "Account.findAllCustomerAccounts", query = "select acc from Account acc where acc.accountType =:accountType")
 })
 public class Account implements Serializable {
 
@@ -37,6 +38,9 @@ public class Account implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
+
+    @Column(name = "status")
+    private boolean status;
 
     public long getId() {
         return id;
@@ -92,5 +96,13 @@ public class Account implements Serializable {
 
     public void setAccountType(AccountType accountType) {
         this.accountType = accountType;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

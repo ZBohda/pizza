@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class AccountService {
@@ -23,6 +24,10 @@ public class AccountService {
 
     @Autowired
     private AddressService addressService;
+
+    public List<Account> findAllCustomersAccount() {
+        return accountRepository.findAllCustomerAccounts();
+    }
 
     public void addNewAccount(RegisterFormDTO registerFormDTO) {
         Account account = createNewAccountFromRegisterDTO(registerFormDTO);

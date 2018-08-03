@@ -1,3 +1,6 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +38,38 @@
 </nav>
 
 <div class="container">
-    <h3> Users! </h3>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Account ID</th>
+            <th>Customer ID</th>
+            <th>Login</th>
+            <th>Email</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Addresses</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <c:forEach var="item" items="${accounts}">
+            <tr>
+                <td>${item.id}</td>
+                <td>${item.customer.id}</td>
+                <td>${item.login}</td>
+                <td>${item.email}</td>
+                <td>${item.customer.firstName}</td>
+                <td>${item.customer.lastName}</td>
+                <td>${item.customer.phone}</td>
+                <td>${item.status}</td>
+                <td><button class="btn btn-primary" onclick="location.href='/pizza/admin/users/${account.id}/update'">Addresses</button>
+                <td><button class="btn btn-primary" onclick="location.href='/pizza/admin/users/${account.id}/update'">Update</button>
+            </tr>
+        </c:forEach>
+    </table>
 </div>
 
 </body>

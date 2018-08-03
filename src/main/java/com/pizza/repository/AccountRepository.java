@@ -1,12 +1,14 @@
 package com.pizza.repository;
 
 import com.pizza.domain.entities.Account;
+import com.pizza.domain.enums.AccountType;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import java.util.List;
 
 @Repository
 public class AccountRepository {
@@ -43,4 +45,9 @@ public class AccountRepository {
     public Account findAccountByUserSessionId(long id){
         return em.createNamedQuery("Account.findAccountByUserSessionId", Account.class).setParameter("customer", id).getResultList().stream().findFirst().orElse(null);
     }
+
+    public List<Account> findAllCustomerAccounts(){
+        return em.createNamedQuery("Account.findAllCustomerAccounts", Account.class).setParameter("accountType", AccountType.USER).getResultList();
+    }
+
 }
