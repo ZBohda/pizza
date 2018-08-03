@@ -14,15 +14,19 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
-
 <body>
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
             <a class="navbar-brand">Espit Chupitos</a>
         </div>
-        <div class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li><a href="/pizza/admin/menu">Menu</a></li>
                 <li><a href="/pizza/admin/users">Users</a></li>
@@ -40,7 +44,8 @@
 </nav>
 
 <div class="container">
-    <form:form class="form-horizontal" method="post" modelAttribute="currency" action="/pizza/admin/currencies/{currencyId}/update">
+    <form:form class="form-horizontal" method="post" modelAttribute="currency"
+               action="/pizza/admin/currencies/{currencyId}/update">
 
         <spring:bind path="id">
             <input type="hidden" name="id" value=${currency.id}>
@@ -50,8 +55,8 @@
             <div class="form-group ${status.error ? 'has-error' : ''}">
                 <label class="col-sm-2 control-label">code</label>
                 <div class="col-sm-10">
-                    <form:input path="code" type="text" class="form-control " id="code" placeholder="code" />
-                    <form:errors path="code" class="control-label" />
+                    <form:input path="code" type="text" class="form-control " id="code" placeholder="code"/>
+                    <form:errors path="code" class="control-label"/>
                 </div>
             </div>
         </spring:bind>

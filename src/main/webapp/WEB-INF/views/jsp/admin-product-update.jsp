@@ -20,9 +20,14 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
             <a class="navbar-brand">Espit Chupitos</a>
         </div>
-        <div class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/pizza/admin/menu">Menu</a></li>
                 <li><a href="/pizza/admin/users">Users</a></li>
@@ -33,21 +38,23 @@
                 <li><a href="/pizza/logout"><span class="glyphicon glyphicon-log-in"></span>Logout</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/pizza/admin/menu/add"><span class="glyphicon glyphicon-plus"></span>Add a product</a></li>
+                <li><a href="/pizza/admin/product/add"><span class="glyphicon glyphicon-plus"></span>Add a product</a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
 
 <div class="container">
-    <form:form class="form-horizontal" method="post" enctype="multipart/form-data" modelAttribute="productFormDTO" action="/pizza/admin/menu/add">
+    <form:form class="form-horizontal" method="post" enctype="multipart/form-data" modelAttribute="productFormDTO"
+               action="/pizza/admin/product/${product.id}/update">
 
         <spring:bind path="name">
             <div class="form-group ${status.error ? 'has-error' : ''}">
                 <label class="col-sm-2 control-label">name</label>
                 <div class="col-sm-10">
-                    <form:input path="name" type="text" class="form-control " id="name" placeholder="name" />
-                    <form:errors path="name" class="control-label" />
+                    <form:input path="name" type="text" class="form-control " id="name" placeholder="name"/>
+                    <form:errors path="name" class="control-label"/>
                 </div>
             </div>
         </spring:bind>
@@ -56,23 +63,30 @@
             <div class="form-group ${status.error ? 'has-error' : ''}">
                 <label class="col-sm-2 control-label">details</label>
                 <div class="col-sm-10">
-                    <form:input path="details" type="text" class="form-control " id="details" placeholder="details" />
-                    <form:errors path="details" class="control-label" />
+                    <form:input path="details" type="text" class="form-control " id="details" placeholder="details"/>
+                    <form:errors path="details" class="control-label"/>
                 </div>
             </div>
         </spring:bind>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">currenct image</label>
+            <div class="col-sm-2">
+                <img src="data:image/jpeg;base64,${image}" width="150" height="150" />
+            </div>
+        </div>
 
         <spring:bind path="file">
             <div class="form-group ${status.error ? 'has-error' : ''}">
-                <label class="col-sm-2 control-label">picture</label>
+                <label class="col-sm-2 control-label">new image</label>
                 <div class="col-sm-10">
-                    <form:input path="file" type="file" class="form-control " id="file" placeholder="file" />
-                    <form:errors path="file" class="control-label" />
+                    <form:input path="file" type="file" class="form-control " id="file" placeholder="file"/>
+                    <form:errors path="file" class="control-label"/>
                 </div>
             </div>
         </spring:bind>
 
-        <button type="submit" class="btn-lg btn-primary pull-right">Add</button>
+        <button type="submit" class="btn-lg btn-primary pull-right">Update</button>
     </form:form>
 </div>
 

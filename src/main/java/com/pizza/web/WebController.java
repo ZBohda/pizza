@@ -16,4 +16,9 @@ public class WebController {
     public String getIndexPage(){
         return "index";
     }
+
+    @RequestMapping(value = "/menu", method = RequestMethod.GET)
+    public String getMenuPage(){
+        return "menu";
+    }
 }

@@ -1,6 +1,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<html xmlns:th="http://www.thymeleaf.org">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +13,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
+
+
 <body>
 
 <nav class="navbar navbar-inverse">
@@ -41,29 +45,40 @@
 </nav>
 
 <div class="container">
+    <form:form class="form-horizontal" method="post" enctype="multipart/form-data" modelAttribute="productFormDTO" action="/pizza/admin/product/add">
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>#ID</th>
-            <th>Name</th>
-            <th>Details</th>
-            <th>Prices</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
+        <spring:bind path="name">
+            <div class="form-group ${status.error ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">name</label>
+                <div class="col-sm-10">
+                    <form:input path="name" type="text" class="form-control " id="name" placeholder="name" />
+                    <form:errors path="name" class="control-label" />
+                </div>
+            </div>
+        </spring:bind>
 
-        <c:forEach var="product" items="${products}">
-            <tr>
-                <td>${product.id}</td>
-                <td>${product.name}</td>
-                <td>${product.details}</td>
-                <td><button class="btn btn-primary" onclick="location.href='/pizza/admin/product/${product.id}/prices'">Prices</button>
-                </td>
-                <td><button class="btn btn-primary" onclick="location.href='/pizza/admin/product/${product.id}/update'">Update</button>
-            </tr>
-        </c:forEach>
-    </table>
+        <spring:bind path="details">
+            <div class="form-group ${status.error ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">details</label>
+                <div class="col-sm-10">
+                    <form:input path="details" type="text" class="form-control " id="details" placeholder="details" />
+                    <form:errors path="details" class="control-label" />
+                </div>
+            </div>
+        </spring:bind>
+
+        <spring:bind path="file">
+            <div class="form-group ${status.error ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">picture</label>
+                <div class="col-sm-10">
+                    <form:input path="file" type="file" class="form-control " id="file" placeholder="file" />
+                    <form:errors path="file" class="control-label" />
+                </div>
+            </div>
+        </spring:bind>
+
+        <button type="submit" class="btn-lg btn-primary pull-right">Add</button>
+    </form:form>
 </div>
 
 </body>

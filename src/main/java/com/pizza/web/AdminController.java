@@ -2,10 +2,7 @@ package com.pizza.web;
 
 import com.pizza.domain.dto.PriceRowFormDTO;
 import com.pizza.domain.dto.ProductFormDTO;
-import com.pizza.domain.entities.Currency;
-import com.pizza.domain.entities.Customer;
-import com.pizza.domain.entities.Order;
-import com.pizza.domain.entities.PriceRow;
+import com.pizza.domain.entities.*;
 import com.pizza.services.CurrencyService;
 import com.pizza.services.PriceRowService;
 import com.pizza.services.ProductService;
@@ -13,6 +10,7 @@ import com.pizza.validators.CurrencyValidator;
 import com.pizza.validators.PriceRowFormValidator;
 import com.pizza.validators.ProductFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,23 +72,33 @@ public class AdminController {
         return "admin-currencies";
     }
 
-    @RequestMapping(value = "/menu/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/product/add", method = RequestMethod.GET)
     public String getProductAddFrom(Model model) {
         model.addAttribute("productFormDTO", new ProductFormDTO());
-        return "admin-menu-add";
+        return "admin-product-add";
     }
 
-    @RequestMapping(value = "/menu/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/product/add", method = RequestMethod.POST)
     public String addNewProduct(@ModelAttribute("productFormDTO") @Validated ProductFormDTO productFormDTO, BindingResult result, Model model) {
         productFormValidator.validate(productFormDTO, result);
         if (result.hasErrors()) {
             model.addAttribute(productFormDTO);
-            return "admin-menu-add";
+            return "admin-product-add";
         } else {
             productService.addNewProduct(productFormDTO);
             model.addAttribute("products", productService.getAll());
             return "admin-menu";
         }
+    }
+
+    @RequestMapping(value = "/product/{productId}/update", method = RequestMethod.GET)
+    public String getProductUpdateForm(@PathVariable long productId, Model model) throws IOException {
+        Product product = productService.getProduct(productId);
+        model.addAttribute("product", productService.getProduct(productId));
+        model.addAttribute("productFormDTO", productService.getProductFormDTOFromProduct(product));
+        byte[] encodedPicture = Base64.encode(product.getPicture());
+        model.addAttribute("image", new String(encodedPicture, "UTF-8"));
+        return "admin-product-update";
     }
 
     @RequestMapping(value = "/product/{productId}/prices", method = RequestMethod.GET)

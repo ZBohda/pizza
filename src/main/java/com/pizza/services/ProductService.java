@@ -39,4 +39,11 @@ public class ProductService {
         return productRepository.read(id);
     }
 
+    public ProductFormDTO getProductFormDTOFromProduct(Product product){
+        ProductFormDTO productFormDTO = new ProductFormDTO();
+        productFormDTO.setName(product.getName());
+        productFormDTO.setDetails(product.getDetails());
+        return productFormDTO;
+    }
+
 }
