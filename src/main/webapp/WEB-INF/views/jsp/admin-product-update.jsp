@@ -49,6 +49,10 @@
     <form:form class="form-horizontal" method="post" enctype="multipart/form-data" modelAttribute="productFormDTO"
                action="/pizza/admin/product/${product.id}/update">
 
+        <spring:bind path="id">
+            <form:input path="id" type="hidden" class="form-control " id="id"/>
+        </spring:bind>
+
         <spring:bind path="name">
             <div class="form-group ${status.error ? 'has-error' : ''}">
                 <label class="col-sm-2 control-label">name</label>
@@ -72,7 +76,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">currenct image</label>
             <div class="col-sm-2">
-                <img src="data:image/jpeg;base64,${image}" width="150" height="150" />
+                <img src="data:image/jpeg;base64,${image}" width="150" height="150"/>
             </div>
         </div>
 

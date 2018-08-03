@@ -9,6 +9,7 @@ import com.pizza.services.ProductService;
 import com.pizza.validators.CurrencyValidator;
 import com.pizza.validators.PriceRowFormValidator;
 import com.pizza.validators.ProductFormValidator;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +46,8 @@ public class AdminController {
 
     @Autowired
     private PriceRowFormValidator priceRowFormValidator;
+
+    private static final Logger LOG = Logger.getLogger(AdminController.class.getName());
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
     public String getMenu(Model model) {
@@ -92,13 +95,38 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/product/{productId}/update", method = RequestMethod.GET)
-    public String getProductUpdateForm(@PathVariable long productId, Model model) throws IOException {
+    public String getProductUpdateForm(@PathVariable long productId, Model model) {
         Product product = productService.getProduct(productId);
         model.addAttribute("product", productService.getProduct(productId));
         model.addAttribute("productFormDTO", productService.getProductFormDTOFromProduct(product));
         byte[] encodedPicture = Base64.encode(product.getPicture());
-        model.addAttribute("image", new String(encodedPicture, "UTF-8"));
+        try {
+            model.addAttribute("image", new String(encodedPicture, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            LOG.error(e);
+        }
         return "admin-product-update";
+    }
+
+    @RequestMapping(value = "/product/{productId}/update", method = RequestMethod.POST)
+    public String updateProduct(@ModelAttribute("productFormDTO") @Validated ProductFormDTO productFormDTO, @PathVariable long productId, BindingResult result, Model model) {
+        productFormValidator.validate(productFormDTO, result);
+        if (result.hasErrors()) {
+            Product product = productService.getProduct(productId);
+            model.addAttribute("product", productService.getProduct(productId));
+            model.addAttribute(productFormDTO);
+            byte[] encodedPicture = Base64.encode(product.getPicture());
+            try {
+                model.addAttribute("image", new String(encodedPicture, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                LOG.error(e);
+            }
+            return "admin-product-update";
+        } else {
+            productService.updateProductFromProductFormDTO(productFormDTO, productId);
+            model.addAttribute("products", productService.getAll());
+            return "admin-menu";
+        }
     }
 
     @RequestMapping(value = "/product/{productId}/prices", method = RequestMethod.GET)

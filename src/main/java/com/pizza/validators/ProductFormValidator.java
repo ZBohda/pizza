@@ -8,7 +8,6 @@ import org.springframework.validation.Validator;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringTokenizer;
 
 @Component
 public class ProductFormValidator implements Validator {
@@ -23,15 +22,16 @@ public class ProductFormValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
 
-
         ProductFormDTO productFormDTO = (ProductFormDTO) target;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty.productForm.name");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "details", "NotEmpty.productForm.details");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "file", "NotEmpty.productForm.file");
 
-        if(!CONTENT_TYPES.contains(productFormDTO.getFile().getContentType())){
-            errors.rejectValue("file", "Pattern.registerForm.file");
+        if (productFormDTO.getFile().isEmpty() && productFormDTO.getId() == 0) {
+            errors.rejectValue("file", "NotEmpty.productForm.file");
+            if (!productFormDTO.getFile().isEmpty() && !CONTENT_TYPES.contains(productFormDTO.getFile().getContentType())) {
+                errors.rejectValue("file", "Pattern.registerForm.file");
+            }
         }
     }
 }

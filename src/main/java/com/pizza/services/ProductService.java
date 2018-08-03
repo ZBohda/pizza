@@ -35,15 +35,30 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product getProduct(long id){
+    public Product getProduct(long id) {
         return productRepository.read(id);
     }
 
-    public ProductFormDTO getProductFormDTOFromProduct(Product product){
+    public ProductFormDTO getProductFormDTOFromProduct(Product product) {
         ProductFormDTO productFormDTO = new ProductFormDTO();
+        productFormDTO.setId(product.getId());
         productFormDTO.setName(product.getName());
         productFormDTO.setDetails(product.getDetails());
         return productFormDTO;
     }
 
+    public void updateProductFromProductFormDTO(ProductFormDTO productFormDTO, long productId) {
+        Product product = productRepository.read(productId);
+        product.setName(productFormDTO.getName());
+        product.setDetails(productFormDTO.getDetails());
+        product.setActive(false);
+        if (!productFormDTO.getFile().isEmpty()) {
+            try {
+                product.setPicture(productFormDTO.getFile().getBytes());
+            } catch (IOException e) {
+                LOG.error(e);
+            }
+        }
+        productRepository.update(product);
+    }
 }
