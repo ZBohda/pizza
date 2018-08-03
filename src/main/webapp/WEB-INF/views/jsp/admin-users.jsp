@@ -64,9 +64,24 @@
                 <td>${item.customer.firstName}</td>
                 <td>${item.customer.lastName}</td>
                 <td>${item.customer.phone}</td>
-                <td>${item.status}</td>
-                <td><button class="btn btn-primary" onclick="location.href='/pizza/admin/users/${account.id}/update'">Addresses</button>
-                <td><button class="btn btn-primary" onclick="location.href='/pizza/admin/users/${account.id}/update'">Update</button>
+                <td>
+                    <c:choose>
+                        <c:when test="${item.status=='true'}">
+                            Active
+                        </c:when>
+                        <c:otherwise>
+                            Inactive
+                        </c:otherwise>
+                    </c:choose>
+                </td>
+                <td>
+                    <button class="btn btn-primary" onclick="location.href='/pizza/admin/users/${account.id}/update'">
+                        Addresses
+                    </button>
+                <td>
+                    <button class="btn btn-primary" onclick="location.href='/pizza/admin/users/${account.id}/update'">
+                        Update
+                    </button>
             </tr>
         </c:forEach>
     </table>
