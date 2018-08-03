@@ -30,44 +30,78 @@
                 <li><a href="/pizza/logout"><span class="glyphicon glyphicon-log-in"></span>Logout</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/pizza/admin/products/${productId}/price/add"><span class="glyphicon glyphicon-plus"></span>Add a price</a></li>
+                <li><a href="/pizza/admin/product/${product.id}/price/add"><span
+                        class="glyphicon glyphicon-plus"></span>Add a price</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
 <div class="container">
-    <form:form class="form-horizontal" method="post" modelAttribute="priceRowFormDTO" action="/pizza/admin/product/${productId}/update/${priceRowId}">
 
-        <spring:bind path="price">
-            <div class="form-group ${status.error ? 'has-error' : ''}">
-                <label class="col-sm-2 control-label">Price</label>
-                <div class="col-sm-10">
-                    <form:input path="price" type="text" class="form-control" id="price" placeholder="price"/>
-                    <form:errors path="price" class="control-label"/>
-                </div>
-            </div>
-        </spring:bind>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#ID</th>
+            <th>Name</th>
+            <th>Details</th>
 
-        <spring:bind path="currencyCode">
-            <div class="form-group ${status.error ? 'has-error' : ''}">
-                <label class="col-sm-2 control-label">Currency</label>
-                <form:select path="currencyCode">
-                    <form:options items="${currencyCodes}"/>
-                </form:select>
-            </div>
-        </spring:bind>
+        </tr>
+        </thead>
+        <tr>
+            <td>${product.id}</td>
+            <td>${product.name}</td>
+            <td>${product.details}</td>
+        </tr>
+    </table>
 
-        <spring:bind path="active">
-            <div class="form-group ${status.error ? 'has-error' : ''}">
-                <form:radiobutton path="active" value="true"/>Active
-                <br>
-                <form:radiobutton path="active" value="false"/>Inactive
-            </div>
-        </spring:bind>
+    <form:form class="form-horizontal" method="post" modelAttribute="priceRowFormDTO"
+               action="/pizza/admin/product/${product.id}/update/${priceRowId}">
 
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Price</th>
+                <th>Currency</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tr>
+                <td>
+                    <spring:bind path="price">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <div class="col-sm-10">
+                                <form:input path="price" type="text" class="form-control" id="price"
+                                            placeholder="price"/>
+                                <form:errors path="price" class="control-label"/>
+                            </div>
+                        </div>
+                    </spring:bind>
+
+                </td>
+                <td>
+                    <spring:bind path="currencyCode">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <form:select path="currencyCode">
+                                <form:options items="${currencyCodes}"/>
+                            </form:select>
+                        </div>
+                    </spring:bind>
+                </td>
+                <td>
+                    <spring:bind path="active">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <form:radiobutton path="active" value="true"/>Active
+                            <br>
+                            <form:radiobutton path="active" value="false"/>Inactive
+                        </div>
+                    </spring:bind>
+                </td>
+            </tr>
+        </table>
         <button type="submit" class="btn-lg btn-primary pull-right">Update</button>
     </form:form>
+
 </div>
 
 </body>

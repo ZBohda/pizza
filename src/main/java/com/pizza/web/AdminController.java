@@ -127,7 +127,7 @@ public class AdminController {
         PriceRowFormDTO priceRowFormDTO = priceRowService.getPriceRowFormDTOFromPriceRow(priceRow);
         model.addAttribute("priceRowFormDTO", priceRowFormDTO);
         model.addAttribute("priceRowId", priceRowId);
-        model.addAttribute("productId", productId);
+        model.addAttribute("product", productService.getProduct(productId));
         model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
         return "admin-product-price-update";
     }
