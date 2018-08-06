@@ -93,4 +93,11 @@ public class AccountService {
     public Account findAccountByUserSessionId(long id) {
         return accountRepository.findAccountByUserSessionId(id);
     }
+
+    public void changeAccountStatusToOpposite(long accountId) {
+        Account account = accountRepository.read(accountId);
+        if (account.isStatus()) {
+            account.setStatus(false);
+        } else account.setStatus(true);
+    }
 }

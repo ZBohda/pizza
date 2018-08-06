@@ -1,7 +1,7 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,45 +50,39 @@
             <th>First name</th>
             <th>Last name</th>
             <th>Phone</th>
-            <th>Addresses</th>
-            <th>Actions</th>
         </tr>
         </thead>
 
-        <c:forEach var="item" items="${accounts}">
+        <tr>
+            <td>${account.id}</td>
+            <td>${account.customer.id}</td>
+            <td>${account.login}</td>
+            <td>${account.email}</td>
+            <td>${account.customer.firstName}</td>
+            <td>${account.customer.lastName}</td>
+            <td>${account.customer.phone}</td>
+        </tr>
+    </table>
+
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Address ID</th>
+            <th>City</th>
+            <th>Address</th>
+        </tr>
+        </thead>
+
+        <c:forEach var="item" items="${addresses}">
             <tr>
                 <td>${item.id}</td>
-                <td>${item.customer.id}</td>
-                <td>${item.login}</td>
-                <td>${item.email}</td>
-                <td>${item.customer.firstName}</td>
-                <td>${item.customer.lastName}</td>
-                <td>${item.customer.phone}</td>
-                <td>
-                    <button class="btn btn-primary" onclick="location.href='/pizza/admin/user/${item.id}/addresses'">
-                        Addresses
-                    </button>
-                <td>
-                    <c:choose>
-                        <c:when test="${item.status=='true'}">
-                            <form:form class="form-horizontal" method="post"
-                                       action="/pizza/admin/user/${item.id}/switch">
-                                <input type="hidden" name="id" value=${item.id}>
-                                <button type="submit" class="btn btn-danger">Deactivate</button>
-                            </form:form>
-                        </c:when>
-                        <c:otherwise>
-                            <form:form class="form-horizontal" method="post"
-                                       action="/pizza/admin/user/${item.id}/switch">
-                                <input type="hidden" name="id" value=${item.id}>
-                                <button type="submit" class="btn btn-primary">Activate</button>
-                            </form:form>
-                        </c:otherwise>
-                    </c:choose>
-                </td>
+                <td>${item.city}</td>
+                <td>${item.address}</td>
             </tr>
         </c:forEach>
     </table>
+
 </div>
 
 </body>

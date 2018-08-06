@@ -65,6 +65,22 @@ public class AdminController {
         return "admin-users";
     }
 
+    @RequestMapping(value = "/user/{accountId}/switch", method = RequestMethod.POST)
+    public String activateAccount(@PathVariable long accountId, Model model) {
+        accountService.changeAccountStatusToOpposite(accountId);
+        model.addAttribute("accounts", accountService.findAllCustomersAccount());
+        return "admin-users";
+    }
+
+    @RequestMapping(value = "/user/{accountId}/addresses", method = RequestMethod.GET)
+    public String getUserAddresses(@PathVariable long accountId, Model model) {
+        Account account = accountService.findAccountById(accountId);
+        model.addAttribute("account", account);
+        model.addAttribute("addresses", account.getCustomer().getAddresses());
+        return "admin-user-addresses";
+    }
+
+
     @RequestMapping(value = "/orders", method = RequestMethod.GET)
     public String getOrders(Model model) {
         List<Order> orders = new ArrayList<>();
