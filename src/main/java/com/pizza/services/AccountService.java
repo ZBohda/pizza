@@ -46,6 +46,7 @@ public class AccountService {
         account.setLogin(registerFormDTO.getLogin());
         account.setPassword(registerFormDTO.getPassword());
         account.setEmail(registerFormDTO.getEmail());
+        account.setStatus(true);
         return account;
     }
 
@@ -98,6 +99,9 @@ public class AccountService {
         Account account = accountRepository.read(accountId);
         if (account.isStatus()) {
             account.setStatus(false);
-        } else account.setStatus(true);
+        } else {
+            account.setStatus(true);
+        }
+        accountRepository.update(account);
     }
 }
