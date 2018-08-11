@@ -74,7 +74,7 @@
         </spring:bind>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">currenct image</label>
+            <label class="col-sm-2 control-label">current image</label>
             <div class="col-sm-2">
                 <img src="data:image/jpeg;base64,${image}" width="150" height="150"/>
             </div>

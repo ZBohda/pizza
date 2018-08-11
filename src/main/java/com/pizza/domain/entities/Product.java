@@ -1,7 +1,12 @@
 package com.pizza.domain.entities;
 
+import com.pizza.web.AdminController;
+import org.apache.log4j.Logger;
+import org.springframework.security.crypto.codec.Base64;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
 @Entity

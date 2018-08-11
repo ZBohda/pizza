@@ -1,7 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,18 +50,14 @@
         </tr>
         </thead>
 
-        <c:forEach var="product" items="${menu}">
+        <c:forEach var="product" items="${basket}">
             <tr>
                 <td><img src="data:image/jpeg;base64,${product.encodedPicture}" width="150" height="150"/></td>
                 <td>${product.priceRow.product.name}</td>
                 <td>${product.priceRow.product.details}</td>
                 <td>${product.priceRow.currency.code}</td>
                 <td>${product.priceRow.price}</td>
-                <td>
-                    <form:form class="form-horizontal" method="post"
-                               action="/pizza/product/${product.priceRow.id}/add">
-                    <button type="submit" class="btn btn-primary">Add</button>
-                    </form:form>
+                <td><button class="btn btn-primary" onclick="location.href='/pizza/basket/product/${product.priceRow.id}/add'">Add to basket</button>
             </tr>
         </c:forEach>
     </table>

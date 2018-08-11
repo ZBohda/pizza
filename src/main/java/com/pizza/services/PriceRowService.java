@@ -1,11 +1,14 @@
 package com.pizza.services;
 
+import com.pizza.domain.dto.MenuRowDTO;
 import com.pizza.domain.dto.PriceRowFormDTO;
 import com.pizza.domain.entities.PriceRow;
 import com.pizza.repository.PriceRowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -71,5 +74,13 @@ public class PriceRowService {
         priceRowFormDTO.setCurrencyCode(priceRow.getCurrency().getCode());
         priceRowFormDTO.setPrice(Double.toString(priceRow.getPrice()));
         return priceRowFormDTO;
+    }
+
+    public List<MenuRowDTO> createMenuRowDTOFromPriceRows(List<PriceRow> priceRows){
+        List<MenuRowDTO> menu = new ArrayList<>();
+        for (PriceRow priceRow : priceRows){
+            menu.add(new MenuRowDTO(priceRow));
+        }
+        return menu;
     }
 }
