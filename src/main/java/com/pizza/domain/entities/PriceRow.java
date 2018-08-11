@@ -8,6 +8,8 @@ import java.io.Serializable;
 @NamedQueries({
         @NamedQuery(name = "PriceRow.findAllPricesForProductId", query = "select pr from PriceRow pr where pr.product.id =:product"),
         @NamedQuery(name = "PriceRow.findAllPricesForCurrencyId", query = "select pr from PriceRow pr where pr.currency.id =:currency"),
+        @NamedQuery(name = "PriceRow.findAllActivePriceRowsForCurrencyCode", query = "select pr from PriceRow pr where pr.currency.code =:code and pr.active = true"),
+
 })
 public class PriceRow implements Serializable {
 

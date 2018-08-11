@@ -24,12 +24,16 @@ public class PriceRowService {
         return priceRowRepository.findAllPriceRowsForProduct(id);
     }
 
-    public List<PriceRow> getAllPriceRowsForCurrency(long id) {
-        return priceRowRepository.findAllPriceRowsForCurrency(id);
+    public List<PriceRow> getAllPriceRowsForCurrencyId(long id) {
+        return priceRowRepository.findAllPriceRowsForCurrencyId(id);
+    }
+
+    public List<PriceRow> getAllPriceRowsForCurrencyCode(String code){
+        return priceRowRepository.findAllPriceRowsForCurrencyCode(code);
     }
 
     public void deactivateAllPriceRowsForCurrency(long id) {
-        List<PriceRow> priceRows = priceRowRepository.findAllPriceRowsForCurrency(id);
+        List<PriceRow> priceRows = priceRowRepository.findAllPriceRowsForCurrencyId(id);
         for (PriceRow priceRow : priceRows) {
             priceRow.setActive(false);
             priceRowRepository.update(priceRow);

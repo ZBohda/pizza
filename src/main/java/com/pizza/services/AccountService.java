@@ -34,6 +34,7 @@ public class AccountService {
         Customer customer = createNewCustomerFromRegisterDTO(registerFormDTO);
         Address address = createNewAddressFromRegisterDTO(registerFormDTO);
         account.setCustomer(customer);
+        account.setStatus(true);
         customer.setAccount(account);
         accountRepository.create(account);
         addressService.addNewAddressesToCustomer(address, customer);

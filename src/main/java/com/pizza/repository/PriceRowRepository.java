@@ -40,7 +40,11 @@ public class PriceRowRepository {
         return em.createNamedQuery("PriceRow.findAllPricesForProductId", PriceRow.class).setParameter("product", id).getResultList();
     }
 
-    public List<PriceRow> findAllPriceRowsForCurrency(long id) {
-        return em.createNamedQuery(" PriceRow.findAllPricesForCurrencyId", PriceRow.class).setParameter("currency", id).getResultList();
+    public List<PriceRow> findAllPriceRowsForCurrencyId(long id) {
+        return em.createNamedQuery("PriceRow.findAllPricesForCurrencyId", PriceRow.class).setParameter("currency", id).getResultList();
+    }
+
+    public List<PriceRow> findAllPriceRowsForCurrencyCode(String code) {
+        return em.createNamedQuery("PriceRow.findAllActivePriceRowsForCurrencyCode", PriceRow.class).setParameter("code", code).getResultList();
     }
 }

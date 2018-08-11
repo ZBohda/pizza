@@ -1,3 +1,6 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +37,29 @@
 </nav>
 
 <div class="container">
-    <h3> Menu in progress </h3>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Details</th>
+            <th>Currency</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <c:forEach var="product" items="${priceRows}">
+            <tr>
+                <td>${product.product.name}</td>
+                <td>${product.product.details}</td>
+                <td>${product.currency.code}</td>
+                <td>${product.price}</td>
+                <td>${product.price}</td>
+                <td><button class="btn btn-primary" onclick="location.href='/pizza/product/${product.id}/add'">Add</button>
+            </tr>
+        </c:forEach>
+    </table>
 </div>
 
 </body>
