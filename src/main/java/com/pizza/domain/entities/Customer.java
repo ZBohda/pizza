@@ -32,6 +32,9 @@ public class Customer implements Serializable {
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private Set<Order> orders = new HashSet<>();
 
+    @OneToOne(mappedBy = "customer")
+    private DiscountCard discountCard;
+
     public long getId() {
         return id;
     }
@@ -88,4 +91,11 @@ public class Customer implements Serializable {
         this.orders = orders;
     }
 
+    public DiscountCard getDiscountCard() {
+        return discountCard;
+    }
+
+    public void setDiscountCard(DiscountCard discountCard) {
+        this.discountCard = discountCard;
+    }
 }
