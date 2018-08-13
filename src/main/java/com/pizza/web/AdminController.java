@@ -76,7 +76,6 @@ public class AdminController {
     public String getUserAddresses(@PathVariable long accountId, Model model) {
         Account account = accountService.findAccountById(accountId);
         model.addAttribute("account", account);
-        model.addAttribute("addresses", account.getCustomer().getAddresses());
         return "admin-user-addresses";
     }
 

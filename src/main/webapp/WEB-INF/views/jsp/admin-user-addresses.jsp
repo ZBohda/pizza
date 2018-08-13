@@ -74,7 +74,7 @@
         </tr>
         </thead>
 
-        <c:forEach var="item" items="${addresses}">
+        <c:forEach var="item" items="${account.customer.addresses}">
             <tr>
                 <td>${item.id}</td>
                 <td>${item.city}</td>
