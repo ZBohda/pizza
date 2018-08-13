@@ -29,8 +29,15 @@
                 <li class="active"><a href="/pizza/menu">Menu</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/pizza/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href="/pizza/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <c:choose>
+                    <c:when test="${empty sessionScope.userId}">
+                        <li><a href="/pizza/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        <li><a href="/pizza/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="/pizza/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                    </c:otherwise>
+                </c:choose>
             </ul>
         </div>
     </div>
@@ -41,23 +48,34 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Picture</th>
             <th>Name</th>
             <th>Details</th>
             <th>Currency</th>
             <th>Price</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
             <th>Actions</th>
         </tr>
         </thead>
 
-        <c:forEach var="product" items="${basket}">
+        <c:forEach items="${sessionScope.basket.products}" var="entry">
             <tr>
-                <td><img src="data:image/jpeg;base64,${product.encodedPicture}" width="150" height="150"/></td>
-                <td>${product.priceRow.product.name}</td>
-                <td>${product.priceRow.product.details}</td>
-                <td>${product.priceRow.currency.code}</td>
-                <td>${product.priceRow.price}</td>
-                <td><button class="btn btn-primary" onclick="location.href='/pizza/basket/product/${product.priceRow.id}/add'">Add to basket</button>
+                <td>${entry.key.product.name}</td>
+                <td>${entry.key.product.details}</td>
+                <td>${entry.key.currency.code}</td>
+                <td>${entry.key.price}</td>
+                <td>${entry.value}</td>
+                <td>${entry.value * entry.key.price} ${entry.key.currency.code}</td>
+                <td>
+                    <button class="btn btn-success"
+                            onclick="location.href='/pizza/basket/product/${entry.key.id}/increase'">Increase
+                    </button>
+                    <button class="btn btn-warning"
+                            onclick="location.href='/pizza/basket/product/${entry.key.id}/decrease'">Decrease
+                    </button>
+                    <button class="btn btn-danger"
+                            onclick="location.href='/pizza/basket/product/${entry.key.id}/remove'">Remove a position
+                    </button>
             </tr>
         </c:forEach>
     </table>

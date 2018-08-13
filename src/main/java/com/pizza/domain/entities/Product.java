@@ -7,6 +7,7 @@ import org.springframework.security.crypto.codec.Base64;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.Set;
 
 @Entity
@@ -83,5 +84,24 @@ public class Product implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+
+        Product product = (Product) o;
+
+        if (id != product.id) return false;
+        return active == product.active;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (active ? 1 : 0);
+        return result;
     }
 }

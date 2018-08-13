@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,8 +27,15 @@
                 <li><a href="/pizza/menu">Menu</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/pizza/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href="/pizza/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <c:choose>
+                    <c:when test="${empty sessionScope.userId}">
+                        <li><a href="/pizza/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        <li><a href="/pizza/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="/pizza/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                    </c:otherwise>
+                </c:choose>
             </ul>
         </div>
     </div>

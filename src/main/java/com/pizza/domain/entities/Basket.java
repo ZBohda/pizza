@@ -13,6 +13,14 @@ public class Basket implements Serializable {
 
     private Map<PriceRow, Integer> products = new HashMap<>();
 
+    public Map<PriceRow, Integer> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Map<PriceRow, Integer> products) {
+        this.products = products;
+    }
+
     public double getTotalPrice() {
         double totalPrice = 0;
         for (Map.Entry<PriceRow, Integer> entry : products.entrySet()) {
@@ -29,12 +37,16 @@ public class Basket implements Serializable {
         }
     }
 
-    public void removePriceRow(PriceRow priceRow) {
+    public void decreasePriceRow(PriceRow priceRow) {
         if (products.get(priceRow) > 1) {
             products.put(priceRow, products.get(priceRow) - 1);
         } else {
             products.remove(priceRow);
         }
+    }
+
+    public void removePriceRow(PriceRow priceRow) {
+        products.remove(priceRow);
     }
 
     public void clear() {

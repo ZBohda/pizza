@@ -71,4 +71,23 @@ public class PriceRow implements Serializable {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PriceRow)) return false;
+
+        PriceRow priceRow = (PriceRow) o;
+
+        if (id != priceRow.id) return false;
+        return active == priceRow.active;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (active ? 1 : 0);
+        return result;
+    }
 }

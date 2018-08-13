@@ -30,8 +30,15 @@
                 <li class="active"><a href="/pizza/menu">Menu</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/pizza/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href="/pizza/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <c:choose>
+                    <c:when test="${empty sessionScope.userId}">
+                        <li><a href="/pizza/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        <li><a href="/pizza/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="/pizza/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                    </c:otherwise>
+                </c:choose>
             </ul>
         </div>
     </div>
@@ -60,7 +67,7 @@
                 <td>${product.priceRow.price}</td>
                 <td>
                     <form:form class="form-horizontal" method="post"
-                               action="/pizza/product/${product.priceRow.id}/add">
+                               action="/pizza/basket/product/${product.priceRow.id}/add">
                     <button type="submit" class="btn btn-primary">Add</button>
                     </form:form>
             </tr>
