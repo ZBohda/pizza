@@ -51,6 +51,30 @@
     <table class="table table-striped">
         <thead>
         <tr>
+            <th>Name</th>
+            <th>Details</th>
+            <th>Currency</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+        </tr>
+        </thead>
+
+        <c:forEach items="${sessionScope.basket.products}" var="entry">
+            <tr>
+                <td>${entry.key.product.name}</td>
+                <td>${entry.key.product.details}</td>
+                <td>${entry.key.currency.code}</td>
+                <td>${entry.key.price}</td>
+                <td>${entry.value}</td>
+                <td>${entry.value * entry.key.price} ${entry.key.currency.code}</td>
+            </tr>
+        </c:forEach>
+    </table>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
             <th>Picture</th>
             <th>Name</th>
             <th>Details</th>

@@ -26,14 +26,9 @@ public class WebController {
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
-    public String getMenuPage(HttpSession httpSession, Model model) {
-        if (httpSession.getAttribute("currency") != null) {
-            List<MenuRowDTO> menu = priceRowService.createMenuRowDTOFromPriceRows(priceRowService.getAllPriceRowsForCurrencyCode(DEFAULT_CODE));
-            model.addAttribute("menu", menu);
-        } else {
-            List<MenuRowDTO> menu = priceRowService.createMenuRowDTOFromPriceRows(priceRowService.getAllPriceRowsForCurrencyCode(DEFAULT_CODE));
-            model.addAttribute("menu", menu);
-        }
+    public String getMenuPage(Model model) {
+        List<MenuRowDTO> menu = priceRowService.createMenuRowDTOFromPriceRows(priceRowService.getAllPriceRowsForCurrencyCode(DEFAULT_CODE));
+        model.addAttribute("menu", menu);
         return "menu";
     }
 }

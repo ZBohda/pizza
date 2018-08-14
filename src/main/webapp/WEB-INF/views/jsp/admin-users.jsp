@@ -73,14 +73,12 @@
                         <c:when test="${item.status=='true'}">
                             <form:form class="form-horizontal" method="post"
                                        action="/pizza/admin/user/${item.id}/switch">
-                                <input type="hidden" name="id" value=${item.id}>
                                 <button type="submit" class="btn btn-danger">Deactivate</button>
                             </form:form>
                         </c:when>
                         <c:otherwise>
                             <form:form class="form-horizontal" method="post"
                                        action="/pizza/admin/user/${item.id}/switch">
-                                <input type="hidden" name="id" value=${item.id}>
                                 <button type="submit" class="btn btn-primary">Activate</button>
                             </form:form>
                         </c:otherwise>

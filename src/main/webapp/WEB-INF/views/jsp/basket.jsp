@@ -1,5 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,12 +32,14 @@
             <ul class="nav navbar-nav navbar-right">
                 <c:choose>
                     <c:when test="${empty sessionScope.userId}">
-                        <li><a href="/pizza/basket/get"><span class="glyphicon glyphicon-shopping-cart"></span> Basket</a></li>
+                        <li><a href="/pizza/basket/get"><span class="glyphicon glyphicon-shopping-cart"></span>
+                            Basket</a></li>
                         <li><a href="/pizza/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                         <li><a href="/pizza/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="/pizza/basket/get"><span class="glyphicon glyphicon-shopping-cart"></span> Basket</a></li>
+                        <li><a href="/pizza/basket/get"><span class="glyphicon glyphicon-shopping-cart"></span>
+                            Basket</a></li>
                         <li><a href="/pizza/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
                     </c:otherwise>
                 </c:choose>
@@ -46,7 +49,6 @@
 </nav>
 
 <div class="container">
-
     <table class="table table-striped">
         <thead>
         <tr>
@@ -81,7 +83,9 @@
             </tr>
         </c:forEach>
     </table>
+    <form:form method="post" action="/pizza/basket/place">
+        <button type="submit" class="btn-lg btn-primary pull-right">Submit</button>
+    </form:form>
 </div>
-
 </body>
 </html>
