@@ -5,6 +5,9 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "address")
+@NamedQueries({
+        @NamedQuery(name = "Address.findAll", query = "select add from Address add")
+})
 public class Address implements Serializable {
 
     @Id

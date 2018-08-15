@@ -14,10 +14,10 @@ public class OrderRepository {
     private EntityManager em;
 
     @Transactional
-    public long create(Order order) {
+    public Order create(Order order) {
         em.persist(order);
         em.flush();
-        return order.getId();
+        return order;
     }
 
     public Order read(long id) {

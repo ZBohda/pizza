@@ -26,10 +26,10 @@ public class Customer implements Serializable {
     @OneToOne(mappedBy = "customer")
     private Account account;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Address> addresses = new HashSet<>();
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Set<Order> orders = new HashSet<>();
 
     @OneToOne(mappedBy = "customer")
@@ -97,5 +97,26 @@ public class Customer implements Serializable {
 
     public void setDiscountCard(DiscountCard discountCard) {
         this.discountCard = discountCard;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer)) return false;
+
+        Customer customer = (Customer) o;
+
+        if (id != customer.id) return false;
+        if (!firstName.equals(customer.firstName)) return false;
+        return lastName.equals(customer.lastName);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        return result;
     }
 }

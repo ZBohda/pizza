@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public class AddressRepository {
@@ -33,5 +34,9 @@ public class AddressRepository {
     @Transactional
     public void delete(long id) {
         em.remove(em.find(Address.class, id));
+    }
+
+    public List<Address> getAll() {
+        return em.createNamedQuery("Address.findAll", Address.class).getResultList();
     }
 }

@@ -5,6 +5,7 @@ import com.pizza.domain.enums.OrderState;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,8 +23,8 @@ public class Order implements Serializable {
     @Enumerated(EnumType.STRING)
     private OrderState orderState;
 
-    @OneToMany(mappedBy = "order")
-    private Set<OrderEntry> entries;
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private Set<OrderEntry> entries = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "order_customer_id")

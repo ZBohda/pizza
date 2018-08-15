@@ -33,11 +33,12 @@ public class AccountService {
         Account account = createNewAccountFromRegisterDTO(registerFormDTO);
         Customer customer = createNewCustomerFromRegisterDTO(registerFormDTO);
         Address address = createNewAddressFromRegisterDTO(registerFormDTO);
+        address.setCustomer(customer);
+        customer.getAddresses().add(address);
         account.setCustomer(customer);
         account.setStatus(true);
         customer.setAccount(account);
         accountRepository.create(account);
-        addressService.addNewAddressesToCustomer(address, customer);
     }
 
     private Account createNewAccountFromRegisterDTO(RegisterFormDTO registerFormDTO) {
