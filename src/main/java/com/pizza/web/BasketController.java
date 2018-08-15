@@ -2,6 +2,7 @@ package com.pizza.web;
 
 import com.pizza.domain.dto.MenuRowDTO;
 import com.pizza.domain.dto.RegisterFormDTO;
+import com.pizza.domain.dto.UnregisteredUserFormDTO;
 import com.pizza.domain.entities.Basket;
 import com.pizza.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class BasketController {
     public String increaseProductQuantity(Model model, @PathVariable long priceRowId, @ModelAttribute Basket basket) {
         basket.addPriceRow(priceRowService.getPriceRowById(priceRowId));
         model.addAttribute("basket", basket);
+        model.addAttribute("unregisteredUserFormDTO", new UnregisteredUserFormDTO());
         return "basket";
     }
 
@@ -51,6 +53,7 @@ public class BasketController {
     public String decreaseProductQuantity(Model model, @PathVariable long priceRowId, @ModelAttribute Basket basket) {
         basket.decreasePriceRow(priceRowService.getPriceRowById(priceRowId));
         model.addAttribute("basket", basket);
+        model.addAttribute("unregisteredUserFormDTO", new UnregisteredUserFormDTO());
         return "basket";
     }
 
@@ -58,12 +61,14 @@ public class BasketController {
     public String removeProduct(Model model, @PathVariable long priceRowId, @ModelAttribute Basket basket) {
         basket.removePriceRow(priceRowService.getPriceRowById(priceRowId));
         model.addAttribute("basket", basket);
+        model.addAttribute("unregisteredUserFormDTO", new UnregisteredUserFormDTO());
         return "basket";
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public String getBasket(Model model, @ModelAttribute Basket basket) {
         model.addAttribute("basket", basket);
+        model.addAttribute("unregisteredUserFormDTO", new UnregisteredUserFormDTO());
         return "basket";
     }
 
@@ -84,6 +89,7 @@ public class BasketController {
             model.addAttribute("menu", menu);
             return "menu";
         } else {
+
             model.addAttribute("registerFormDTO", new RegisterFormDTO());
             return "register";
         }

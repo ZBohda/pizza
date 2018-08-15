@@ -83,9 +83,76 @@
             </tr>
         </c:forEach>
     </table>
-    <form:form method="post" action="/pizza/basket/place">
-        <button type="submit" class="btn-lg btn-primary pull-right">Submit</button>
-    </form:form>
+
+    <div class="container">
+        <c:choose>
+            <c:when test="${empty sessionScope.userId}">
+                <h2 align="center">You are not registered customer! Please, fill all field and submit to confirm your order!</h2>
+                <form:form class="form-horizontal" method="post" modelAttribute="unregisteredUserFormDTO"
+                           action="/pizza/basket/place">
+
+                    <spring:bind path="firstName">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <label class="col-sm-2 control-label">First name</label>
+                            <div class="col-sm-10">
+                                <form:input path="firstName" type="text" class="form-control" id="firstName"
+                                            placeholder="firstName"/>
+                                <form:errors path="firstName" class="control-label"/>
+                            </div>
+                        </div>
+                    </spring:bind>
+
+                    <spring:bind path="lastName">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <label class="col-sm-2 control-label">Last name</label>
+                            <div class="col-sm-10">
+                                <form:input path="lastName" type="text" class="form-control" id="lastName"
+                                            placeholder="lastName"/>
+                                <form:errors path="lastName" class="control-label"/>
+                            </div>
+                        </div>
+                    </spring:bind>
+
+                    <spring:bind path="phone">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <label class="col-sm-2 control-label">Phone</label>
+                            <div class="col-sm-10">
+                                <form:input path="phone" type="text" class="form-control" id="phone"
+                                            placeholder="phone"/>
+                                <form:errors path="phone" class="control-label"/>
+                            </div>
+                        </div>
+                    </spring:bind>
+
+                    <spring:bind path="city">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <label class="col-sm-2 control-label">City</label>
+                            <div class="col-sm-10">
+                                <form:input path="city" type="text" class="form-control" id="city" placeholder="city"/>
+                                <form:errors path="city" class="control-label"/>
+                            </div>
+                        </div>
+                    </spring:bind>
+
+                    <spring:bind path="address">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <label class="col-sm-2 control-label">Address</label>
+                            <div class="col-sm-10">
+                                <form:input path="address" type="text" class="form-control" id="address"
+                                            placeholder="address"/>
+                                <form:errors path="address" class="control-label"/>
+                            </div>
+                        </div>
+                    </spring:bind>
+
+                    <button type="submit" class="btn-lg btn-primary pull-right">Submit</button>
+                </form:form>
+            </c:when>
+            <c:otherwise>
+                <button type="submit" class="btn-lg btn-primary pull-right">Submit</button>
+            </c:otherwise>
+        </c:choose>
+    </div>
 </div>
 </body>
 </html>
