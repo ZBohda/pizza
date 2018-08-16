@@ -87,7 +87,8 @@
     <div class="container">
         <c:choose>
             <c:when test="${empty sessionScope.userId}">
-                <h2 align="center">You are not registered customer! Please, fill all field and submit to confirm your order!</h2>
+                <h2 align="center">You are not registered customer! Please, fill all field and submit to confirm your
+                    order!</h2>
                 <form:form class="form-horizontal" method="post" modelAttribute="unregisteredUserFormDTO"
                            action="/pizza/basket/place">
 
@@ -149,7 +150,17 @@
                 </form:form>
             </c:when>
             <c:otherwise>
-                <button type="submit" class="btn-lg btn-primary pull-right">Submit</button>
+                <form:form class="form-horizontal" method="post" modelAttribute="registeredUserFormDTO" action="/pizza/basket/place">
+                    <spring:bind path="addressId">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <form:select path="addressId">
+                                <form:options items="${addressesMap}"/>
+                            </form:select>
+                        </div>
+                    </spring:bind>
+
+                    <button type="submit" class="btn-lg btn-primary pull-right">Submit</button>
+                </form:form>
             </c:otherwise>
         </c:choose>
     </div>

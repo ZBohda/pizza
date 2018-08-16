@@ -39,4 +39,18 @@ public class AddressRepository {
     public List<Address> getAll() {
         return em.createNamedQuery("Address.findAll", Address.class).getResultList();
     }
+
+    public Address getAddressById(long id) {
+        return em.createNamedQuery("Address.findAddressById", Address.class).setParameter("id", id).getResultList().stream().findFirst().orElse(null);
+    }
+
+    public List<Address> getAllAddressesForCustomerId(long customerId) {
+        return em.createNamedQuery("Address.findAllAddressesForCustomerId", Address.class).setParameter("customerId", customerId).getResultList();
+    }
+
+    public Address getAddressForShadowCustomerId(long customerId) {
+        return em.createNamedQuery("Address.findAddressByCustomerId", Address.class).setParameter("customerId", customerId).getResultList().stream().findFirst().orElse(null);
+    }
+
+
 }

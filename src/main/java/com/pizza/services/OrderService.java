@@ -1,9 +1,6 @@
 package com.pizza.services;
 
-import com.pizza.domain.entities.Basket;
-import com.pizza.domain.entities.Order;
-import com.pizza.domain.entities.OrderEntry;
-import com.pizza.domain.entities.PriceRow;
+import com.pizza.domain.entities.*;
 import com.pizza.domain.enums.OrderState;
 import com.pizza.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +18,17 @@ public class OrderService {
     @Autowired
     private CustomerService customerService;
 
-    public void createNewOrderFromBasket(Basket basket, long customerId) {
+    @Autowired
+    private AddressService addressService;
+
+    public void createNewOrderFromBasket(Basket basket, long customerId, long addressId) {
 
         Order order = new Order();
         order.setCreationTime(new Date());
         order.setOrderState(OrderState.PLACED);
         order.setCustomer(customerService.findCustomerById(customerId));
         order.setTotalPrice(basket.getTotalPrice());
+        order.setAddress(addressService.findAddressById(addressId));
 
         orderRepository.create(order);
 
@@ -40,5 +41,6 @@ public class OrderService {
             orderEntry.setOrder(order);
         }
         orderRepository.update(order);
+        basket.clear();
     }
 }

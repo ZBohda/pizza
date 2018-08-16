@@ -33,6 +33,10 @@ public class Order implements Serializable {
     @Column(name = "order_price")
     private double totalPrice;
 
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
+
     public long getId() {
         return id;
     }
@@ -79,5 +83,13 @@ public class Order implements Serializable {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }
