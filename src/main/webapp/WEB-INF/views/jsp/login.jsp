@@ -31,8 +31,8 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/pizza/basket/get"><span class="glyphicon glyphicon-shopping-cart"></span> Basket</a></li>
-                <li><a href="/pizza/register"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-                <li class="active"><a href="/pizza/login"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                <li class="active"><a href="/pizza/login"><span class="glyphicon glyphicon-log-in"></span> Sign in</a></li>
+                <li><a href="/pizza/register"><span class="glyphicon glyphicon-user"></span> Sign up</a></li>
             </ul>
         </div>
     </div>

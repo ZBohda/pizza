@@ -2,6 +2,7 @@ package com.pizza.web;
 
 import com.pizza.domain.dto.RegisterFormDTO;
 import com.pizza.services.AccountService;
+import com.pizza.services.CurrencyService;
 import com.pizza.validators.RegisterFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,10 @@ public class RegisterController {
     private AccountService accountService;
 
     @Autowired
-    RegisterFormValidator registerFormValidator;
+    private RegisterFormValidator registerFormValidator;
+
+    @Autowired
+    private CurrencyService currencyService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -31,11 +35,13 @@ public class RegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String getRegisterForm(Model model) {
         model.addAttribute("registerFormDTO", new RegisterFormDTO());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
         return "register";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String signUp(@ModelAttribute("registerFormDTO") @Validated RegisterFormDTO registerFormDTO, BindingResult result, Model model) {
+        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
         if (result.hasErrors()) {
             model.addAttribute(registerFormDTO);
             return "register";

@@ -1,5 +1,7 @@
 package com.pizza.domain.entities;
 
+import com.pizza.services.CurrencyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +13,15 @@ import java.util.Map;
 @Scope("session")
 public class Basket implements Serializable {
 
+    private static final String DEFAULT_CURRENCY_CODE = "USD";
+
     private Map<PriceRow, Integer> products = new HashMap<>();
+
+    private Currency currency = new Currency();
+
+    {
+        currency.setCode(DEFAULT_CURRENCY_CODE);
+    }
 
     public Map<PriceRow, Integer> getProducts() {
         return products;
@@ -51,5 +61,13 @@ public class Basket implements Serializable {
 
     public void clear() {
         products.clear();
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 }

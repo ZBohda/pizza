@@ -4,6 +4,7 @@ import com.pizza.domain.dto.MenuRowDTO;
 import com.pizza.domain.dto.RegisteredUserFormDTO;
 import com.pizza.domain.dto.UnregisteredUserFormDTO;
 import com.pizza.domain.entities.Basket;
+import com.pizza.domain.entities.Currency;
 import com.pizza.domain.entities.Customer;
 import com.pizza.services.*;
 import com.pizza.validators.UnregisterUserFormValidator;
@@ -32,7 +33,7 @@ public class BasketController {
     private AddressService addressService;
 
     @Autowired
-    private AccountService accountService;
+    private CurrencyService currencyService;
 
     @Autowired
     private OrderService orderService;
@@ -96,6 +97,7 @@ public class BasketController {
     public String getBasket(Model model, @ModelAttribute Basket basket, HttpSession session) {
         model.addAttribute("basket", basket);
         model.addAttribute("unregisteredUserFormDTO", new UnregisteredUserFormDTO());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
         if (session.getAttribute("userId") != null) {
             model.addAttribute("addressesMap", addressService.getAllAddressesForCustomerId(Long.parseLong(session.getAttribute("userId").toString())));
             model.addAttribute("registeredUserFormDTO", new RegisteredUserFormDTO());

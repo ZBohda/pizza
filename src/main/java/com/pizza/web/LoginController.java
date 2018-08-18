@@ -3,6 +3,7 @@ package com.pizza.web;
 import com.pizza.domain.dto.LoginFormDTO;
 import com.pizza.domain.enums.AccountType;
 import com.pizza.services.AccountService;
+import com.pizza.services.CurrencyService;
 import com.pizza.validators.LoginFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,9 @@ public class LoginController {
     @Autowired
     private LoginFormValidator loginFormValidator;
 
+    @Autowired
+    private CurrencyService currencyService;
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(loginFormValidator);
@@ -34,11 +38,13 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLoginForm(Model model) {
         model.addAttribute("loginFormDTO", new LoginFormDTO());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
         return "login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String signIn(@ModelAttribute("loginFormDTO") @Validated LoginFormDTO loginFormDTO, BindingResult result, Model model, HttpSession session) {
+        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
         if (result.hasErrors()) {
             model.addAttribute(loginFormDTO);
             return "login";
@@ -54,6 +60,7 @@ public class LoginController {
     public String logout(Model model, HttpSession session) {
         session.invalidate();
         model.addAttribute("loginFormDTO", new LoginFormDTO());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
         return "login";
     }
 }
