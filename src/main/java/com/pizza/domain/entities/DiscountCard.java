@@ -1,5 +1,7 @@
 package com.pizza.domain.entities;
 
+import com.pizza.domain.enums.DiscountCardState;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -18,6 +20,9 @@ public class DiscountCard implements Serializable {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @Enumerated(EnumType.STRING)
+    private DiscountCardState discountCardState;
 
     public long getId() {
         return id;
@@ -41,5 +46,13 @@ public class DiscountCard implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public DiscountCardState getDiscountCardState() {
+        return discountCardState;
+    }
+
+    public void setDiscountCardState(DiscountCardState discountCardState) {
+        this.discountCardState = discountCardState;
     }
 }

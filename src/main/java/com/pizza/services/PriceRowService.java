@@ -5,7 +5,6 @@ import com.pizza.domain.dto.PriceRowFormDTO;
 import com.pizza.domain.entities.PriceRow;
 import com.pizza.repository.PriceRowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class PriceRowService {
         return priceRowRepository.findAllPriceRowsForCurrencyId(id);
     }
 
-    public List<PriceRow> getAllPriceRowsForCurrencyCode(String code){
+    public List<PriceRow> getAllPriceRowsForCurrencyCode(String code) {
         return priceRowRepository.findAllPriceRowsForCurrencyCode(code);
     }
 
@@ -47,7 +46,7 @@ public class PriceRowService {
         priceRowRepository.create(createPriceRowFromPriceRowFormDTO(priceRowFormDTO, productId));
     }
 
-    public void updatePriceRowFromPriceRowFormDTO(PriceRowFormDTO priceRowFormDTO, long priceRowId){
+    public void updatePriceRowFromPriceRowFormDTO(PriceRowFormDTO priceRowFormDTO, long priceRowId) {
         PriceRow priceRow = priceRowRepository.read(priceRowId);
         priceRow.setActive(priceRowFormDTO.isActive());
         priceRow.setCurrency(currencyService.getCurrencyByCode(priceRowFormDTO.getCurrencyCode()));
@@ -68,7 +67,7 @@ public class PriceRowService {
         return priceRowRepository.read(id);
     }
 
-    public PriceRowFormDTO getPriceRowFormDTOFromPriceRow(PriceRow priceRow){
+    public PriceRowFormDTO getPriceRowFormDTOFromPriceRow(PriceRow priceRow) {
         PriceRowFormDTO priceRowFormDTO = new PriceRowFormDTO();
         priceRowFormDTO.setActive(priceRow.isActive());
         priceRowFormDTO.setCurrencyCode(priceRow.getCurrency().getCode());
@@ -76,9 +75,9 @@ public class PriceRowService {
         return priceRowFormDTO;
     }
 
-    public List<MenuRowDTO> createMenuRowDTOFromPriceRows(List<PriceRow> priceRows){
+    public List<MenuRowDTO> createMenuRowDTOFromPriceRows(List<PriceRow> priceRows) {
         List<MenuRowDTO> menu = new ArrayList<>();
-        for (PriceRow priceRow : priceRows){
+        for (PriceRow priceRow : priceRows) {
             menu.add(new MenuRowDTO(priceRow));
         }
         return menu;

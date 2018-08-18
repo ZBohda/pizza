@@ -104,8 +104,9 @@ public class BasketController {
     }
 
     @RequestMapping(value = "/place", method = RequestMethod.POST)
-    public String placeOrder(Model model, @ModelAttribute Basket basket, @ModelAttribute("unregisteredUserFormDTO") @Validated UnregisteredUserFormDTO unregisteredUserFormDTO, BindingResult result,
-                             HttpSession session, @ModelAttribute("registeredUserFormDTO") RegisteredUserFormDTO registeredUserFormDTO) {
+    public String placeOrder(@ModelAttribute("unregisteredUserFormDTO") @Validated UnregisteredUserFormDTO unregisteredUserFormDTO,
+                             @ModelAttribute("registeredUserFormDTO") RegisteredUserFormDTO registeredUserFormDTO,
+                             HttpSession session, Model model, @ModelAttribute Basket basket, BindingResult result) {
         if (session.getAttribute("userId") != null) {
             orderService.createNewOrderFromBasket(basket, Long.parseLong(session.getAttribute("userId").toString()), Long.parseLong(registeredUserFormDTO.getAddressId()));
             List<MenuRowDTO> menu = priceRowService.createMenuRowDTOFromPriceRows(priceRowService.getAllPriceRowsForCurrencyCode(DEFAULT_CODE));

@@ -1,12 +1,16 @@
 package com.pizza.services;
 
-import com.pizza.domain.entities.*;
+import com.pizza.domain.entities.Basket;
+import com.pizza.domain.entities.Order;
+import com.pizza.domain.entities.OrderEntry;
+import com.pizza.domain.entities.PriceRow;
 import com.pizza.domain.enums.OrderState;
 import com.pizza.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -42,5 +46,13 @@ public class OrderService {
         }
         orderRepository.update(order);
         basket.clear();
+    }
+
+    public List<Order> getAllOrdersForCustomerId(long customerId) {
+        return orderRepository.findAllOrdersForCustomerId(customerId);
+    }
+
+    public Order getOrderByOrderId(long orderId) {
+        return orderRepository.read(orderId);
     }
 }

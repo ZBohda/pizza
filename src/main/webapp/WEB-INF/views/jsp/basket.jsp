@@ -150,15 +150,16 @@
                 </form:form>
             </c:when>
             <c:otherwise>
-                <form:form class="form-horizontal" method="post" modelAttribute="registeredUserFormDTO" action="/pizza/basket/place">
+                <form:form class="form-horizontal" method="post" modelAttribute="registeredUserFormDTO"
+                           action="/pizza/basket/place">
                     <spring:bind path="addressId">
                         <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <label>Addresses for a delivery: </label>
                             <form:select path="addressId">
                                 <form:options items="${addressesMap}"/>
                             </form:select>
                         </div>
                     </spring:bind>
-
                     <button type="submit" class="btn-lg btn-primary pull-right">Submit</button>
                 </form:form>
             </c:otherwise>

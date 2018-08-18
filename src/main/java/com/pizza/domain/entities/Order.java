@@ -10,6 +10,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "orders")
+@NamedQueries({
+        @NamedQuery(name = "Order.findAllOrdersForCustomerId", query = "select ord from Order ord where ord.customer.id =:customer"),
+})
 public class Order implements Serializable {
 
     @Id
@@ -23,12 +26,16 @@ public class Order implements Serializable {
     @Enumerated(EnumType.STRING)
     private OrderState orderState;
 
-    @OneToMany(mappedBy = "order", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private Set<OrderEntry> entries = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "order_customer_id")
     private Customer customer;
+
+    @OneToOne
+    @JoinColumn(name = "currency_id")
+    private Currency currency;
 
     @Column(name = "order_price")
     private double totalPrice;
@@ -75,6 +82,14 @@ public class Order implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     public double getTotalPrice() {
