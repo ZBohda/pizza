@@ -119,9 +119,8 @@ public class BasketController {
         model.addAttribute("currencyCodes", currencyService.getCurrencyIdsCodesMap());
         if (session.getAttribute("userId") != null) {
             orderService.createNewOrderFromBasket(basket, Long.parseLong(session.getAttribute("userId").toString()), Long.parseLong(registeredUserFormDTO.getAddressId()));
-            List<MenuRowDTO> menu = priceRowService.createMenuRowDTOFromPriceRows(priceRowService.getAllPriceRowsForCurrencyCode(basket.getCurrency().getCode()));
-            model.addAttribute("menu", menu);
-            return "menu";
+            model.addAttribute("orders", orderService.getAllOrdersForCustomerId((Long) session.getAttribute("userId")));
+            return "customer-orders";
         } else {
             unregisterUserFormValidator.validate(unregisteredUserFormDTO, result);
             if (result.hasErrors()) {
