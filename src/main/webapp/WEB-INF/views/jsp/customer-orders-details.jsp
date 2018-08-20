@@ -28,13 +28,12 @@
             <ul class="nav navbar-nav">
                 <li><a href="/pizza/index">Home</a></li>
                 <li><a href="/pizza/menu">Menu</a></li>
-                <li class="active"><a href="/pizza/customer/orders">Orders</a></li>
-                <li><a href="/pizza/customer/profile">Profile</a></li>
+                <li class="active"><a href="/pizza/customer/orders">My orders</a></li>
+                <li><a href="/pizza/customer/profile">My profile</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown"> Current currency ${sessionScope.basket.currency.code}
-                        <span class="caret"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown"> Current currency ${sessionScope.basket.currency.code}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <c:forEach items="${currencyCodes}" var="entry">
                             <li><a href="/pizza/currency/${entry.key}">${entry.value}</a></li>
