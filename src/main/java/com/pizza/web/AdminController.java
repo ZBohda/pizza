@@ -37,6 +37,9 @@ public class AdminController {
     private CurrencyValidator currencyValidator;
 
     @Autowired
+    private PriceRowFormValidator priceRowFormValidator;
+
+    @Autowired
     private ProductService productService;
 
     @Autowired
@@ -47,9 +50,6 @@ public class AdminController {
 
     @Autowired
     private AccountService accountService;
-
-    @Autowired
-    private PriceRowFormValidator priceRowFormValidator;
 
     private static final Logger LOG = Logger.getLogger(AdminController.class.getName());
 

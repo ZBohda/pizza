@@ -38,14 +38,14 @@ public class PriceRowFormValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "active", "NotEmpty.priceRowForm.active");
 
         if (!currencyCodeValidator.valid(priceRowFormDTO.getCurrencyCode())) {
-            errors.rejectValue("code", "Pattern.priceRowForm.code");
+            errors.rejectValue("currencyCode", "Pattern.priceRowForm.code");
         }
 
-        if (currencyService.getCurrencyByCode(priceRowFormDTO.getCurrencyCode()) == null) {
-            errors.rejectValue("code", "NotExists.priceRowForm.code");
+        if (currencyService.getCurrencyByCode((priceRowFormDTO.getCurrencyCode())) == null) {
+            errors.rejectValue("currencyCode", "NotExists.priceRowForm.code");
         }
 
-        if (!priceValidator.valid(priceRowFormDTO.getPrice())){
+        if (!priceValidator.valid(priceRowFormDTO.getPrice())) {
             errors.rejectValue("price", "Pattern.priceRowForm.price");
         }
     }

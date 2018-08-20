@@ -1,6 +1,7 @@
 package com.pizza.domain.entities;
 
 import com.pizza.services.CurrencyService;
+import com.pizza.services.PriceRowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

@@ -33,11 +33,11 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" method="post" href="/pizza/currency"> Current currency ${sessionScope.basket.currency.code}
+                    <a class="dropdown-toggle" data-toggle="dropdown"> Current currency ${sessionScope.basket.currency.code}
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <c:forEach items="${currencyCodes}" var="entry">
-                            <li><a href="/pizza/currency/${entry.value}">${entry.key}</a></li>
+                            <li><a href="/pizza/currency/${entry.key}">${entry.value}</a></li>
                         </c:forEach>
                     </ul>
                 </li>
@@ -66,7 +66,7 @@
             <tr>
                 <td>${entry.creationTime}</td>
                 <td>${entry.address.city} ${entry.address.address}</td>
-                <td>${entry.currency}</td>
+                <td>${entry.currency.code}</td>
                 <td>${entry.totalPrice}</td>
                 <td>${entry.orderState}</td>
                 <td>

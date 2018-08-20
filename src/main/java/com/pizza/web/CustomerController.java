@@ -25,7 +25,7 @@ public class CustomerController {
     @RequestMapping(value = "/orders", method = RequestMethod.GET)
     public String getOrders(Model model, HttpSession session) {
         model.addAttribute("orders", orderService.getAllOrdersForCustomerId((Long) session.getAttribute("userId")));
-        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyIdsCodesMap());
         return "customer-orders";
     }
 
@@ -34,7 +34,7 @@ public class CustomerController {
         Order order = orderService.getOrderByOrderId(orderId);
         model.addAttribute("order", order);
         model.addAttribute("orderEntry", order.getEntries());
-        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyIdsCodesMap());
         return "customer-orders-details";
     }
 }

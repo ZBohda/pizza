@@ -1,6 +1,5 @@
 package com.pizza.validators;
 
-import com.pizza.domain.dto.RegisterFormDTO;
 import com.pizza.domain.dto.UnregisteredUserFormDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,10 +14,6 @@ public class UnregisterUserFormValidator implements Validator {
     @Autowired
     @Qualifier("namesValidator")
     private NamesValidator namesValidator;
-
-    @Autowired
-    @Qualifier("loginValidator")
-    private LoginValidator loginValidator;
 
     @Autowired
     @Qualifier("phoneValidator")

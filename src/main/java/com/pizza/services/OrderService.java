@@ -25,6 +25,9 @@ public class OrderService {
     @Autowired
     private AddressService addressService;
 
+    @Autowired
+    private CurrencyService currencyService;
+
     public void createNewOrderFromBasket(Basket basket, long customerId, long addressId) {
 
         Order order = new Order();
@@ -33,7 +36,7 @@ public class OrderService {
         order.setCustomer(customerService.findCustomerById(customerId));
         order.setTotalPrice(basket.getTotalPrice());
         order.setAddress(addressService.findAddressById(addressId));
-
+        order.setCurrency(currencyService.getCurrencyByCode(basket.getCurrency().getCode()));
         orderRepository.create(order);
 
         for (Map.Entry<PriceRow, Integer> entry : basket.getProducts().entrySet()) {

@@ -35,13 +35,13 @@ public class RegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String getRegisterForm(Model model) {
         model.addAttribute("registerFormDTO", new RegisterFormDTO());
-        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyIdsCodesMap());
         return "register";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String signUp(@ModelAttribute("registerFormDTO") @Validated RegisterFormDTO registerFormDTO, BindingResult result, Model model) {
-        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyIdsCodesMap());
         if (result.hasErrors()) {
             model.addAttribute(registerFormDTO);
             return "register";

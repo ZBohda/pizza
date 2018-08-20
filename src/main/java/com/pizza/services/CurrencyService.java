@@ -38,6 +38,15 @@ public class CurrencyService {
         currencyRepository.update(currency);
     }
 
+    public Map<Long, String> getCurrencyIdsCodesMap(){
+        List<Currency> currencies = currencyRepository.getAll();
+        Map<Long, String> currencyCodes = new HashMap<>();
+        for(Currency currency : currencies){
+            currencyCodes.put(currency.getId(), currency.getCode());
+        }
+        return currencyCodes;
+    }
+
     public Map<String, String> getCurrencyCodesMap(){
         List<Currency> currencies = currencyRepository.getAll();
         Map<String, String> currencyCodes = new HashMap<>();

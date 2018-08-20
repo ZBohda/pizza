@@ -1,6 +1,8 @@
 package com.pizza.repository;
 
+import com.pizza.domain.entities.Currency;
 import com.pizza.domain.entities.PriceRow;
+import com.pizza.domain.entities.Product;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,5 +48,9 @@ public class PriceRowRepository {
 
     public List<PriceRow> findAllPriceRowsForCurrencyCode(String code) {
         return em.createNamedQuery("PriceRow.findAllActivePriceRowsForCurrencyCode", PriceRow.class).setParameter("code", code).getResultList();
+    }
+
+    public PriceRow findPriceRowForNewCurrency(Currency currency, Product product) {
+        return em.createNamedQuery("PriceRow.findPriceRowForNewCurrency", PriceRow.class).setParameter("currency", currency).setParameter("product", product).getResultList().stream().findFirst().orElse(read(1));
     }
 }

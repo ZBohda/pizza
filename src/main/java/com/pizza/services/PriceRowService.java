@@ -2,7 +2,9 @@ package com.pizza.services;
 
 import com.pizza.domain.dto.MenuRowDTO;
 import com.pizza.domain.dto.PriceRowFormDTO;
+import com.pizza.domain.entities.Currency;
 import com.pizza.domain.entities.PriceRow;
+import com.pizza.domain.entities.Product;
 import com.pizza.repository.PriceRowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,5 +83,9 @@ public class PriceRowService {
             menu.add(new MenuRowDTO(priceRow));
         }
         return menu;
+    }
+
+    public PriceRow findPriceRowForNewCurrency(Currency currency, Product product) {
+        return priceRowRepository.findPriceRowForNewCurrency(currency, product);
     }
 }

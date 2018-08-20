@@ -38,13 +38,13 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLoginForm(Model model) {
         model.addAttribute("loginFormDTO", new LoginFormDTO());
-        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyIdsCodesMap());
         return "login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String signIn(@ModelAttribute("loginFormDTO") @Validated LoginFormDTO loginFormDTO, BindingResult result, Model model, HttpSession session) {
-        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyIdsCodesMap());
         if (result.hasErrors()) {
             model.addAttribute(loginFormDTO);
             return "login";
@@ -60,7 +60,7 @@ public class LoginController {
     public String logout(Model model, HttpSession session) {
         session.invalidate();
         model.addAttribute("loginFormDTO", new LoginFormDTO());
-        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyIdsCodesMap());
         return "login";
     }
 }

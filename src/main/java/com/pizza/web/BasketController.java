@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping(value = "/basket/")
 public class BasketController {
 
-    private static final String DEFAULT_CODE = "USD";
+    //private static final String DEFAULT_CODE = "USD";
 
     @Autowired
     private PriceRowService priceRowService;
@@ -45,15 +45,18 @@ public class BasketController {
     private UnregisterUserFormValidator unregisterUserFormValidator;
 
     @ModelAttribute("basket")
-    public Basket createBasket() {
-        return new Basket();
+    public Basket createBasket(HttpSession session) {
+        if (session.getAttribute("basket") == null) {
+            return new Basket();
+        } else return (Basket) session.getAttribute("basket");
     }
 
     @RequestMapping(value = "/product/{priceRowId}/add", method = RequestMethod.POST)
     public String addProductToBasket(Model model, @PathVariable long priceRowId, @ModelAttribute Basket basket) {
         basket.addPriceRow(priceRowService.getPriceRowById(priceRowId));
-        List<MenuRowDTO> menu = priceRowService.createMenuRowDTOFromPriceRows(priceRowService.getAllPriceRowsForCurrencyCode(DEFAULT_CODE));
+        List<MenuRowDTO> menu = priceRowService.createMenuRowDTOFromPriceRows(priceRowService.getAllPriceRowsForCurrencyCode(basket.getCurrency().getCode()));
         model.addAttribute("menu", menu);
+        model.addAttribute("currencyCodes", currencyService.getCurrencyIdsCodesMap());
         return "menu";
     }
 
@@ -62,6 +65,7 @@ public class BasketController {
         basket.addPriceRow(priceRowService.getPriceRowById(priceRowId));
         model.addAttribute("basket", basket);
         model.addAttribute("unregisteredUserFormDTO", new UnregisteredUserFormDTO());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyIdsCodesMap());
         if (session.getAttribute("userId") != null) {
             model.addAttribute("addressesMap", addressService.getAllAddressesForCustomerId((Long) session.getAttribute("userId")));
             model.addAttribute("registeredUserFormDTO", new RegisteredUserFormDTO());
@@ -74,6 +78,7 @@ public class BasketController {
         basket.decreasePriceRow(priceRowService.getPriceRowById(priceRowId));
         model.addAttribute("basket", basket);
         model.addAttribute("unregisteredUserFormDTO", new UnregisteredUserFormDTO());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyIdsCodesMap());
         if (session.getAttribute("userId") != null) {
             model.addAttribute("addressesMap", addressService.getAllAddressesForCustomerId((Long) session.getAttribute("userId")));
             model.addAttribute("registeredUserFormDTO", new RegisteredUserFormDTO());
@@ -86,6 +91,7 @@ public class BasketController {
         basket.removePriceRow(priceRowService.getPriceRowById(priceRowId));
         model.addAttribute("basket", basket);
         model.addAttribute("unregisteredUserFormDTO", new UnregisteredUserFormDTO());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyIdsCodesMap());
         if (session.getAttribute("userId") != null) {
             model.addAttribute("addressesMap", addressService.getAllAddressesForCustomerId((Long) session.getAttribute("userId")));
             model.addAttribute("registeredUserFormDTO", new RegisteredUserFormDTO());
@@ -96,22 +102,24 @@ public class BasketController {
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public String getBasket(Model model, @ModelAttribute Basket basket, HttpSession session) {
         model.addAttribute("basket", basket);
-        model.addAttribute("unregisteredUserFormDTO", new UnregisteredUserFormDTO());
-        model.addAttribute("currencyCodes", currencyService.getCurrencyCodesMap());
+        model.addAttribute("currencyCodes", currencyService.getCurrencyIdsCodesMap());
         if (session.getAttribute("userId") != null) {
             model.addAttribute("addressesMap", addressService.getAllAddressesForCustomerId(Long.parseLong(session.getAttribute("userId").toString())));
             model.addAttribute("registeredUserFormDTO", new RegisteredUserFormDTO());
+        } else {
+            model.addAttribute("unregisteredUserFormDTO", new UnregisteredUserFormDTO());
         }
         return "basket";
     }
 
     @RequestMapping(value = "/place", method = RequestMethod.POST)
-    public String placeOrder(@ModelAttribute("unregisteredUserFormDTO") @Validated UnregisteredUserFormDTO unregisteredUserFormDTO,
+    public String placeOrder(@ModelAttribute("unregisteredUserFormDTO") @Validated UnregisteredUserFormDTO unregisteredUserFormDTO, BindingResult result,
                              @ModelAttribute("registeredUserFormDTO") RegisteredUserFormDTO registeredUserFormDTO,
-                             HttpSession session, Model model, @ModelAttribute Basket basket, BindingResult result) {
+                             HttpSession session, Model model, @ModelAttribute("basket") Basket basket) {
+        model.addAttribute("currencyCodes", currencyService.getCurrencyIdsCodesMap());
         if (session.getAttribute("userId") != null) {
             orderService.createNewOrderFromBasket(basket, Long.parseLong(session.getAttribute("userId").toString()), Long.parseLong(registeredUserFormDTO.getAddressId()));
-            List<MenuRowDTO> menu = priceRowService.createMenuRowDTOFromPriceRows(priceRowService.getAllPriceRowsForCurrencyCode(DEFAULT_CODE));
+            List<MenuRowDTO> menu = priceRowService.createMenuRowDTOFromPriceRows(priceRowService.getAllPriceRowsForCurrencyCode(basket.getCurrency().getCode()));
             model.addAttribute("menu", menu);
             return "menu";
         } else {
@@ -123,7 +131,7 @@ public class BasketController {
             } else {
                 Customer customer = customerService.createNewCustomerFromUnregisteredUserFormDTO(unregisteredUserFormDTO);
                 orderService.createNewOrderFromBasket(basket, customer.getId(), addressService.getAddressForShadowCustomerId(customer.getId()).getId());
-                List<MenuRowDTO> menu = priceRowService.createMenuRowDTOFromPriceRows(priceRowService.getAllPriceRowsForCurrencyCode(DEFAULT_CODE));
+                List<MenuRowDTO> menu = priceRowService.createMenuRowDTOFromPriceRows(priceRowService.getAllPriceRowsForCurrencyCode(basket.getCurrency().getCode()));
                 model.addAttribute("menu", menu);
                 return "menu";
             }
