@@ -51,38 +51,53 @@
             <th>Address</th>
             <th>Phone</th>
             <th>Order State</th>
-            <th>Actions</th>
         </tr>
         </thead>
+        <tr>
+            <td>${order.id}</td>
+            <td>${order.creationTime}</td>
+            <td>${order.customer.id}</td>
+            <td>${order.currency.code}</td>
+            <td>${order.totalPrice}</td>
+            <td>${order.address.city} ${order.address.address}</td>
+            <td>${order.customer.phone}</td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Current state: ${order.orderState}<span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <c:forEach items="${orderStates}" var="entry">
+                            <li>
+                                <form:form class="form-horizontal" method="post"
+                                           action="/pizza/admin/order/${order.id}/state/${entry.key}/change">
+                                    <button type="submit" class="btn btn-primary btn-block">${entry.value}</button>
+                                </form:form>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    </table>
 
-        <c:forEach items="${orders}" var="order">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Product Id</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total Price</th>
+        </tr>
+        </thead>
+        <c:forEach items="${order.entries}" var="entry">
             <tr>
-                <td>${order.id}</td>
-                <td>${order.creationTime}</td>
-                <td>${order.customer.id}</td>
-                <td>${order.currency.code}</td>
-                <td>${order.totalPrice}</td>
-                <td>${order.address.city} ${order.address.address}</td>
-                <td>${order.customer.phone}</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Current state: ${order.orderState}<span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            <c:forEach items="${orderStates}" var="entry">
-                                <li>
-                                    <form:form class="form-horizontal" method="post"
-                                               action="/pizza/admin/order/${order.id}/state/${entry.key}/change">
-                                        <button type="submit" class="btn btn-primary btn-block">${entry.value}</button>
-                                    </form:form>
-                                </li>
-                            </c:forEach>
-                        </ul>
-                    </div>
-                </td>
-                <td>
-                    <button class="btn btn-primary" onclick="location.href='/pizza/admin/order/${order.id}/details'">
-                        Details
-                    </button>
+                <td>${entry.id}</td>
+                <td>${entry.product.id}</td>
+                <td>${entry.product.name}</td>
+                <td>${entry.quantity}</td>
+                <td>${entry.priceRow.price}</td>
+                <td>${entry.priceRow.price * entry.quantity}</td>
             </tr>
         </c:forEach>
     </table>

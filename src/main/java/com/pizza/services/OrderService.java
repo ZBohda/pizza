@@ -9,9 +9,7 @@ import com.pizza.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -28,8 +26,11 @@ public class OrderService {
     @Autowired
     private CurrencyService currencyService;
 
-    public void createNewOrderFromBasket(Basket basket, long customerId, long addressId) {
+    public void update(Order order){
+        orderRepository.update(order);
+    }
 
+    public void createNewOrderFromBasket(Basket basket, long customerId, long addressId) {
         Order order = new Order();
         order.setCreationTime(new Date());
         order.setOrderState(OrderState.PLACED);
@@ -51,11 +52,25 @@ public class OrderService {
         basket.clear();
     }
 
+    public final Map<Integer, OrderState> getOrderStates() {
+        Map<Integer, OrderState> orderStates = new HashMap<>();
+        orderStates.put(1, OrderState.CANCELED);
+        orderStates.put(2, OrderState.FINISHED);
+        orderStates.put(3, OrderState.IN_PROGRESS);
+        orderStates.put(4, OrderState.VERIFIED);
+        orderStates.put(5, OrderState.PLACED);
+        return orderStates;
+    }
+
     public List<Order> getAllOrdersForCustomerId(long customerId) {
         return orderRepository.findAllOrdersForCustomerId(customerId);
     }
 
     public Order getOrderByOrderId(long orderId) {
         return orderRepository.read(orderId);
+    }
+
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
     }
 }

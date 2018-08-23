@@ -1,15 +1,15 @@
 package com.pizza.web;
 
+import com.pizza.domain.dto.OrderStateDTO;
 import com.pizza.domain.dto.PriceRowFormDTO;
 import com.pizza.domain.dto.ProductFormDTO;
 import com.pizza.domain.entities.*;
-import com.pizza.services.AccountService;
-import com.pizza.services.CurrencyService;
-import com.pizza.services.PriceRowService;
-import com.pizza.services.ProductService;
+import com.pizza.domain.enums.OrderState;
+import com.pizza.services.*;
 import com.pizza.validators.CurrencyValidator;
 import com.pizza.validators.PriceRowFormValidator;
 import com.pizza.validators.ProductFormValidator;
+import com.sun.javafx.sg.prism.NGShape;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.codec.Base64;
@@ -17,14 +17,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/admin/")
@@ -50,6 +48,9 @@ public class AdminController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private OrderService orderService;
 
     private static final Logger LOG = Logger.getLogger(AdminController.class.getName());
 
@@ -82,10 +83,29 @@ public class AdminController {
 
     @RequestMapping(value = "/orders", method = RequestMethod.GET)
     public String getOrders(Model model) {
-        List<Order> orders = new ArrayList<>();
-        model.addAttribute("orders", orders);
+        model.addAttribute("orders", orderService.getAllOrders());
+        model.addAttribute("orderStates", orderService.getOrderStates());
         return "admin-orders";
     }
+
+    @RequestMapping(value = "/order/{orderId}/details", method = RequestMethod.GET)
+    public String getOrderDetails(Model model, @PathVariable long orderId) {
+        model.addAttribute("order", orderService.getOrderByOrderId(orderId));
+        model.addAttribute("orderStates", orderService.getOrderStates());
+        return "admin-order-details";
+    }
+
+    @RequestMapping(value = "/order/{orderId}/state/{stateId}/change", method = RequestMethod.POST)
+    public String changeOrderState(Model model, @PathVariable long orderId, @PathVariable Integer stateId){
+        Map<Integer, OrderState> orderStateMap = orderService.getOrderStates();
+        Order order = orderService.getOrderByOrderId(orderId);
+        order.setOrderState(orderStateMap.get(stateId));
+        orderService.update(order);
+        model.addAttribute("orders", orderService.getAllOrders());
+        model.addAttribute("orderStates", orderService.getOrderStates());
+        return "admin-orders";
+    }
+
 
     @RequestMapping(value = "/currencies", method = RequestMethod.GET)
     public String getCurrency(Model model) {
@@ -239,6 +259,4 @@ public class AdminController {
             return "admin-currencies";
         }
     }
-
-
 }

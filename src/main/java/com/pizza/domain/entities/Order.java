@@ -12,6 +12,7 @@ import java.util.Set;
 @Table(name = "orders")
 @NamedQueries({
         @NamedQuery(name = "Order.findAllOrdersForCustomerId", query = "select ord from Order ord where ord.customer.id =:customer"),
+        @NamedQuery(name = "Order.findAll", query = "select ord from Order ord"),
 })
 public class Order implements Serializable {
 

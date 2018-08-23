@@ -1,6 +1,7 @@
 package com.pizza.repository;
 
 import com.pizza.domain.entities.Order;
+import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,5 +39,9 @@ public class OrderRepository {
 
     public List<Order> findAllOrdersForCustomerId(long customerId) {
         return em.createNamedQuery("Order.findAllOrdersForCustomerId", Order.class).setParameter("customer", customerId).getResultList();
+    }
+
+    public List<Order> findAll() {
+        return em.createNamedQuery("Order.findAll", Order.class).getResultList();
     }
 }

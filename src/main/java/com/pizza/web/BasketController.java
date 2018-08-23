@@ -24,8 +24,6 @@ import java.util.List;
 @RequestMapping(value = "/basket/")
 public class BasketController {
 
-    //private static final String DEFAULT_CODE = "USD";
-
     @Autowired
     private PriceRowService priceRowService;
 
