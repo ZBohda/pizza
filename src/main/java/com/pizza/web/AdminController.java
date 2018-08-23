@@ -1,6 +1,5 @@
 package com.pizza.web;
 
-import com.pizza.domain.dto.OrderStateDTO;
 import com.pizza.domain.dto.PriceRowFormDTO;
 import com.pizza.domain.dto.ProductFormDTO;
 import com.pizza.domain.entities.*;
@@ -9,7 +8,6 @@ import com.pizza.services.*;
 import com.pizza.validators.CurrencyValidator;
 import com.pizza.validators.PriceRowFormValidator;
 import com.pizza.validators.ProductFormValidator;
-import com.sun.javafx.sg.prism.NGShape;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.codec.Base64;
@@ -20,8 +18,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -84,25 +80,24 @@ public class AdminController {
     @RequestMapping(value = "/orders", method = RequestMethod.GET)
     public String getOrders(Model model) {
         model.addAttribute("orders", orderService.getAllOrders());
-        model.addAttribute("orderStates", orderService.getOrderStates());
         return "admin-orders";
     }
 
-    @RequestMapping(value = "/order/{orderId}/details", method = RequestMethod.GET)
-    public String getOrderDetails(Model model, @PathVariable long orderId) {
-        model.addAttribute("order", orderService.getOrderByOrderId(orderId));
-        model.addAttribute("orderStates", orderService.getOrderStates());
+    @RequestMapping(value = "/order/{orderId}/update", method = RequestMethod.GET)
+    public String updateOrder(Model model, @PathVariable long orderId) {
+        Order order = orderService.getOrderByOrderId(orderId);
+        model.addAttribute("order", order);
+        model.addAttribute("orderStates", orderService.getAllowedStatesForCertainState(order.getOrderState()));
         return "admin-order-details";
     }
 
     @RequestMapping(value = "/order/{orderId}/state/{stateId}/change", method = RequestMethod.POST)
     public String changeOrderState(Model model, @PathVariable long orderId, @PathVariable Integer stateId){
-        Map<Integer, OrderState> orderStateMap = orderService.getOrderStates();
+        Map<Integer, OrderState> orderStateMap = orderService.getAllOrderStates();
         Order order = orderService.getOrderByOrderId(orderId);
         order.setOrderState(orderStateMap.get(stateId));
         orderService.update(order);
         model.addAttribute("orders", orderService.getAllOrders());
-        model.addAttribute("orderStates", orderService.getOrderStates());
         return "admin-orders";
     }
 

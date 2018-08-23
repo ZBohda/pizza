@@ -62,19 +62,29 @@
             <td>${order.address.city} ${order.address.address}</td>
             <td>${order.customer.phone}</td>
             <td>
-                <div class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Current state: ${order.orderState}<span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                        <c:forEach items="${orderStates}" var="entry">
-                            <li>
-                                <form:form class="form-horizontal" method="post"
-                                           action="/pizza/admin/order/${order.id}/state/${entry.key}/change">
-                                    <button type="submit" class="btn btn-primary btn-block">${entry.value}</button>
-                                </form:form>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </div>
+                <c:choose>
+                    <c:when test="${order.orderState == 'FINISHED'}">
+                        <span class="label label-success">${order.orderState}</span>
+                    </c:when>
+                    <c:when test="${order.orderState == 'CANCELED'}">
+                        <span class="label label-danger"> ${order.orderState}</span>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                                Current state: ${order.orderState}<span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <c:forEach items="${orderStates}" var="entry">
+                                    <li>
+                                        <form:form class="form-horizontal" method="post" action="/pizza/admin/order/${order.id}/state/${entry.key}/change">
+                                            <button type="submit" class="btn btn-primary btn-block">${entry.value}</button>
+                                        </form:form>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </td>
         </tr>
     </table>

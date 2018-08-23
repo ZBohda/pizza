@@ -26,7 +26,7 @@ public class OrderService {
     @Autowired
     private CurrencyService currencyService;
 
-    public void update(Order order){
+    public void update(Order order) {
         orderRepository.update(order);
     }
 
@@ -52,14 +52,34 @@ public class OrderService {
         basket.clear();
     }
 
-    public final Map<Integer, OrderState> getOrderStates() {
+    public final Map<Integer, OrderState> getAllOrderStates() {
         Map<Integer, OrderState> orderStates = new HashMap<>();
-        orderStates.put(1, OrderState.CANCELED);
-        orderStates.put(2, OrderState.FINISHED);
+        orderStates.put(1, OrderState.PLACED);
+        orderStates.put(2, OrderState.VERIFIED);
         orderStates.put(3, OrderState.IN_PROGRESS);
-        orderStates.put(4, OrderState.VERIFIED);
-        orderStates.put(5, OrderState.PLACED);
+        orderStates.put(4, OrderState.FINISHED);
+        orderStates.put(5, OrderState.CANCELED);
         return orderStates;
+    }
+
+    public final Map<Integer, OrderState> getAllowedStatesForCertainState(OrderState certainState) {
+        Map<Integer, OrderState> allowedStates = new HashMap<>();
+        if(certainState.equals(OrderState.PLACED)){
+            allowedStates.put(2, OrderState.VERIFIED);
+            allowedStates.put(5, OrderState.CANCELED);
+            return allowedStates;
+        }
+        if(certainState.equals(OrderState.VERIFIED)){
+            allowedStates.put(3, OrderState.IN_PROGRESS);
+            allowedStates.put(5, OrderState.CANCELED);
+            return allowedStates;
+        }
+        if(certainState.equals(OrderState.IN_PROGRESS)){
+            allowedStates.put(4, OrderState.FINISHED);
+            allowedStates.put(5, OrderState.CANCELED);
+            return allowedStates;
+        }
+        return allowedStates;
     }
 
     public List<Order> getAllOrdersForCustomerId(long customerId) {
