@@ -58,14 +58,14 @@ public class AdminController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String getUsers(Model model) {
-        model.addAttribute("accounts", accountService.findAllCustomersAccount());
+        model.addAttribute("accounts", accountService.findAllCustomersAccounts());
         return "admin-users";
     }
 
     @RequestMapping(value = "/user/{accountId}/switch", method = RequestMethod.POST)
     public String activateAccount(@PathVariable long accountId, Model model) {
         accountService.changeAccountStatusToOpposite(accountId);
-        model.addAttribute("accounts", accountService.findAllCustomersAccount());
+        model.addAttribute("accounts", accountService.findAllCustomersAccounts());
         return "admin-users";
     }
 

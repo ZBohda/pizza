@@ -11,7 +11,7 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "Account.findAccountByLogin", query = "select acc from Account acc where acc.login =:login"),
         @NamedQuery(name = "Account.findAccountByUserSessionId", query = "select acc from Account acc where acc.customer.id =:customer"),
-        @NamedQuery(name = "Account.findAllCustomerAccounts", query = "select acc from Account acc where acc.accountType =:accountType")
+        @NamedQuery(name = "Account.findAllCustomersAccounts", query = "select acc from Account acc where acc.accountType =:accountType")
 })
 public class Account implements Serializable {
 

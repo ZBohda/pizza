@@ -1,5 +1,6 @@
 package com.pizza.services;
 
+import com.pizza.domain.dto.AddressFormDTO;
 import com.pizza.domain.dto.UnregisteredUserFormDTO;
 import com.pizza.domain.entities.Address;
 import com.pizza.domain.entities.Customer;
@@ -29,5 +30,16 @@ public class CustomerService {
         customer.getAddresses().add(address);
         customerRepository.create(customer);
         return customer;
+    }
+
+    public void addNewAddressToCustomerFromAddressFormDTO(AddressFormDTO addressFormDTO, long customerId){
+        Address address = new Address();
+        address.setCity(addressFormDTO.getCity());
+        address.setAddress(addressFormDTO.getAddress());
+        address.setActive(true);
+        Customer customer = customerRepository.read(customerId);
+        address.setCustomer(customer);
+        customer.getAddresses().add(address);
+        customerRepository.update(customer);
     }
 }

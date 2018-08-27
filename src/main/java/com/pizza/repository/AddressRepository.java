@@ -49,7 +49,7 @@ public class AddressRepository {
     }
 
     public Address getAddressForShadowCustomerId(long customerId) {
-        return em.createNamedQuery("Address.findAddressByCustomerId", Address.class).setParameter("customerId", customerId).getResultList().stream().findFirst().orElse(null);
+        return em.createNamedQuery("Address.findAllAddressesForCustomerId", Address.class).setParameter("customerId", customerId).getResultList().stream().findFirst().orElse(null);
     }
 
 

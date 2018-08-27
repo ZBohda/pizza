@@ -46,8 +46,8 @@ public class AccountRepository {
         return em.createNamedQuery("Account.findAccountByUserSessionId", Account.class).setParameter("customer", id).getResultList().stream().findFirst().orElse(null);
     }
 
-    public List<Account> findAllCustomerAccounts(){
-        return em.createNamedQuery("Account.findAllCustomerAccounts", Account.class).setParameter("accountType", AccountType.USER).getResultList();
+    public List<Account> findAllCustomersAccounts(){
+        return em.createNamedQuery("Account.findAllCustomersAccounts", Account.class).setParameter("accountType", AccountType.USER).getResultList();
     }
 
 }

@@ -9,7 +9,6 @@ import java.io.Serializable;
         @NamedQuery(name = "Address.findAll", query = "select add from Address add"),
         @NamedQuery(name = "Address.findAddressById", query = "select add from Address add where add.id =:id"),
         @NamedQuery(name = "Address.findAllAddressesForCustomerId", query = "select add from Address add where add.customer.id =:customerId"),
-        @NamedQuery(name = "Address.findAddressByCustomerId", query = "select add from Address add where add.customer.id =:customerId")
 })
 public class Address implements Serializable {
 
@@ -27,6 +26,9 @@ public class Address implements Serializable {
     @ManyToOne
     @JoinColumn(name = "address_customer_id")
     private Customer customer;
+
+    @Column(name = "active")
+    private boolean active;
 
     public long getId() {
         return id;
@@ -58,5 +60,13 @@ public class Address implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

@@ -1,5 +1,6 @@
 package com.pizza.services;
 
+import com.pizza.domain.dto.AddressFormDTO;
 import com.pizza.domain.dto.LoginFormDTO;
 import com.pizza.domain.dto.RegisterFormDTO;
 import com.pizza.domain.entities.Account;
@@ -22,11 +23,8 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
-    private AddressService addressService;
-
-    public List<Account> findAllCustomersAccount() {
-        return accountRepository.findAllCustomerAccounts();
+    public List<Account> findAllCustomersAccounts() {
+        return accountRepository.findAllCustomersAccounts();
     }
 
     public void addNewAccount(RegisterFormDTO registerFormDTO) {
@@ -66,6 +64,8 @@ public class AccountService {
         address.setAddress(registerFormDTO.getAddress());
         return address;
     }
+
+
 
     public Account findAccountById(long id) {
         return accountRepository.read(id);
